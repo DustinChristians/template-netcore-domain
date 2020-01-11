@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompanyName.ProjectName.Inf
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5AC36C84-FF1D-4CAD-930A-0F64D1AC57C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompanyName.ProjectName.UnitTests", "Tests\CompanyName.ProjectName.UnitTests\CompanyName.ProjectName.UnitTests.csproj", "{C6A000CB-06B5-4EC7-95C8-A622CADA6868}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompanyName.ProjectName.UnitTests", "Tests\CompanyName.ProjectName.UnitTests\CompanyName.ProjectName.UnitTests.csproj", "{C6A000CB-06B5-4EC7-95C8-A622CADA6868}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompanyName.ProjectName.IntegrationTests", "Tests\CompanyName.ProjectName.IntegrationTests\CompanyName.ProjectName.IntegrationTests.csproj", "{D2C8CC11-CF2F-4023-A8A3-571B3F40DFDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,12 +31,17 @@ Global
 		{C6A000CB-06B5-4EC7-95C8-A622CADA6868}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6A000CB-06B5-4EC7-95C8-A622CADA6868}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6A000CB-06B5-4EC7-95C8-A622CADA6868}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2C8CC11-CF2F-4023-A8A3-571B3F40DFDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2C8CC11-CF2F-4023-A8A3-571B3F40DFDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2C8CC11-CF2F-4023-A8A3-571B3F40DFDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2C8CC11-CF2F-4023-A8A3-571B3F40DFDC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C6A000CB-06B5-4EC7-95C8-A622CADA6868} = {5AC36C84-FF1D-4CAD-930A-0F64D1AC57C6}
+		{D2C8CC11-CF2F-4023-A8A3-571B3F40DFDC} = {5AC36C84-FF1D-4CAD-930A-0F64D1AC57C6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0E3CB874-8F51-4C27-94F8-F1960A50EF90}
