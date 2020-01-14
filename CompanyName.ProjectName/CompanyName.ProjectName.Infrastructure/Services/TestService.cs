@@ -1,8 +1,9 @@
-﻿using CompanyName.ProjectName.Core.Models;
+﻿using CompanyName.ProjectName.Core.Abstractions;
+using CompanyName.ProjectName.Core.Models;
 
 namespace CompanyName.ProjectName.Infrastructure.Services
 {
-    public class TestService
+    public class TestService : ITestService
     {
         public TestModel GetTestModel()
         {

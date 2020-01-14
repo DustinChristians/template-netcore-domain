@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Reflection;
 using AutoMapper;
+using CompanyName.ProjectName.Core.Abstractions;
+using CompanyName.ProjectName.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CompanyName.ProjectName.Mapping
@@ -33,7 +35,7 @@ namespace CompanyName.ProjectName.Mapping
         // reside in the correct assemblies
         private static void AddDependenciesAutomatically(IServiceCollection services)
         {
-            // Example: RegisterInterfaces("Service", services, Assembly.GetAssembly(typeof(ITestService)), Assembly.GetAssembly(typeof(TestService)));
+            RegisterInterfaces("Service", services, Assembly.GetAssembly(typeof(ITestService)), Assembly.GetAssembly(typeof(TestService)));
         }
 
         private static void RegisterInterfaces(string interfaceType, IServiceCollection services, Assembly coreAssembly, Assembly serviceAssembly)
