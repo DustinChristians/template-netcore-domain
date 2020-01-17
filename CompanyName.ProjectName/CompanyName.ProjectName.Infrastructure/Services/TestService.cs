@@ -9,7 +9,7 @@ namespace CompanyName.ProjectName.Infrastructure.Services
         {
             return new TestModel
             {
-                Name = "Test"
+                Name = "Hello, World!"
             };
         }
     }
