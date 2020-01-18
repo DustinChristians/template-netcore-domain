@@ -35,7 +35,7 @@ namespace CompanyName.ProjectName.Mapping
         // reside in the correct assemblies
         private static void AddDependenciesAutomatically(IServiceCollection services)
         {
-            RegisterInterfaces("Service", services, Assembly.GetAssembly(typeof(ITestService)), Assembly.GetAssembly(typeof(TestService)));
+            RegisterInterfaces("Service", services, Assembly.GetAssembly(typeof(IHelloWorldService)), Assembly.GetAssembly(typeof(HelloWorldService)));
         }
 
         private static void RegisterInterfaces(string interfaceType, IServiceCollection services, Assembly coreAssembly, Assembly serviceAssembly)
