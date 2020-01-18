@@ -3,11 +3,11 @@ using CompanyName.ProjectName.Core.Models;
 
 namespace CompanyName.ProjectName.Infrastructure.Services
 {
-    public class TestService : ITestService
+    public class HelloWorldService : IHelloWorldService
     {
-        public TestModel GetTestModel()
+        public HelloWorldModel GetHelloWorldModel()
         {
-            return new TestModel
+            return new HelloWorldModel
             {
                 Name = "Hello, World!"
             };

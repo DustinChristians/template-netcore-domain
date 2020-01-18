@@ -2,8 +2,8 @@
 
 namespace CompanyName.ProjectName.Core.Abstractions
 {
-    public interface ITestService
+    public interface IHelloWorldService
     {
-        TestModel GetTestModel();
+        HelloWorldModel GetHelloWorldModel();
     }
 }

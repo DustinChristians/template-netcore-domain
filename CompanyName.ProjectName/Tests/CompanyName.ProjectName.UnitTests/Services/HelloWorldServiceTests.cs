@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace CompanyName.ProjectName.UnitTests
 {
     [TestFixture]
-    public class ServiceTests
+    public class HelloWorldServiceTests
     {
         [SetUp]
         public void Setup()
@@ -14,8 +14,8 @@ namespace CompanyName.ProjectName.UnitTests
         [Test]
         public void Test1()
         {
-            var testService = new TestService();
-            var result = testService.GetTestModel();
+            var helloWorldService = new HelloWorldService();
+            var result = helloWorldService.GetHelloWorldModel();
 
             Assert.IsTrue(string.Equals(result.Name, "Hello, World!"));
         }
