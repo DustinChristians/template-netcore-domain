@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompanyName.ProjectName.Uni
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompanyName.ProjectName.IntegrationTests", "Tests\CompanyName.ProjectName.IntegrationTests\CompanyName.ProjectName.IntegrationTests.csproj", "{D2C8CC11-CF2F-4023-A8A3-571B3F40DFDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompanyName.ProjectName.Mapping", "CompanyName.ProjectName.Mapping\CompanyName.ProjectName.Mapping.csproj", "{8295C735-7109-4432-BEFD-7D018360B085}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompanyName.ProjectName.Mapping", "CompanyName.ProjectName.Mapping\CompanyName.ProjectName.Mapping.csproj", "{8295C735-7109-4432-BEFD-7D018360B085}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompanyName.ProjectName.Repository", "CompanyName.ProjectName.Repository\CompanyName.ProjectName.Repository.csproj", "{EFBD6B50-398F-41A5-9A77-47B9C64A55C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{8295C735-7109-4432-BEFD-7D018360B085}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8295C735-7109-4432-BEFD-7D018360B085}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8295C735-7109-4432-BEFD-7D018360B085}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFBD6B50-398F-41A5-9A77-47B9C64A55C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFBD6B50-398F-41A5-9A77-47B9C64A55C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFBD6B50-398F-41A5-9A77-47B9C64A55C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFBD6B50-398F-41A5-9A77-47B9C64A55C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
