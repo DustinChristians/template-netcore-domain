@@ -10,6 +10,7 @@ namespace CompanyName.ProjectName.Core.Abstractions.Repositories
         where T : BaseModel
     {
         Task<T> GetByIdAsync(int id);
+        Task<T> GetByGuidAsync(Guid guid);
         Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
 
         Task AddAsync(T entity);
