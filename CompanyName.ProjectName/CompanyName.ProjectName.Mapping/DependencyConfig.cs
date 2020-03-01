@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Reflection;
 using AutoMapper;
-using CompanyName.ProjectName.Core.Abstractions;
+using CompanyName.ProjectName.Core.Abstractions.Repositories;
+using CompanyName.ProjectName.Core.Abstractions.Services;
 using CompanyName.ProjectName.Infrastructure.Services;
+using CompanyName.ProjectName.Repository.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CompanyName.ProjectName.Mapping
@@ -23,6 +25,8 @@ namespace CompanyName.ProjectName.Mapping
                 cfg =>
                 {
                     cfg.AddMaps("CompanyName.ProjectName.Infrastructure");
+                    cfg.AddMaps("CompanyName.ProjectName.Repository");
+                    cfg.AddMaps("CompanyName.ProjectName.WebApi");
                     cfg.ConstructServicesUsing(
                         type => ActivatorUtilities.CreateInstance(services.BuildServiceProvider(), type));
                 });
@@ -35,7 +39,8 @@ namespace CompanyName.ProjectName.Mapping
         // reside in the correct assemblies
         private static void AddDependenciesAutomatically(IServiceCollection services)
         {
-            RegisterInterfaces("Service", services, Assembly.GetAssembly(typeof(IHelloWorldService)), Assembly.GetAssembly(typeof(HelloWorldService)));
+            RegisterInterfaces("Service", services, Assembly.GetAssembly(typeof(IMessagesService)), Assembly.GetAssembly(typeof(MessagesService)));
+            RegisterInterfaces("Repository", services, Assembly.GetAssembly(typeof(IMessagesRepository)), Assembly.GetAssembly(typeof(MessagesRepository)));
         }
 
         private static void RegisterInterfaces(string interfaceType, IServiceCollection services, Assembly coreAssembly, Assembly serviceAssembly)
