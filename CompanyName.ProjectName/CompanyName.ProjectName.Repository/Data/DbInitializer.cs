@@ -1,5 +1,6 @@
-﻿using System.Linq;
-using CompanyName.ProjectName.Repository.Models;
+﻿using System;
+using System.Linq;
+using CompanyName.ProjectName.Core.Models.Repositories;
 
 namespace CompanyName.ProjectName.Repository.Data
 {
@@ -18,7 +19,22 @@ namespace CompanyName.ProjectName.Repository.Data
             // load test data into arrays rather than List<T> collections to optimize performance.
             var messages = new Message[]
             {
-                new Message { Text = "Hello, World!" },
+                new Message
+                {
+                    Text = "Hello, World!",
+                    Category = "special",
+                    Guid = Guid.NewGuid(),
+                    CreatedOn = DateTime.Now,
+                    ModifiedOn = DateTime.Now
+                },
+                new Message
+                {
+                    Text = "This is a sample application.",
+                    Category = "generic",
+                    Guid = Guid.NewGuid(),
+                    CreatedOn = DateTime.Now,
+                    ModifiedOn = DateTime.Now
+                },
             };
 
             foreach (Message s in messages)
