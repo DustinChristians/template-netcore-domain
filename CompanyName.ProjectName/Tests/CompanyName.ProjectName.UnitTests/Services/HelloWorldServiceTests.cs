@@ -14,7 +14,7 @@ namespace CompanyName.ProjectName.UnitTests
         [Test]
         public void Test1()
         {
-            var helloWorldService = new HelloWorldService();
+            var helloWorldService = new MessagesService();
             var result = helloWorldService.GetHelloWorldModel();
 
             Assert.IsTrue(string.Equals(result.Name, "Hello, World!"));
