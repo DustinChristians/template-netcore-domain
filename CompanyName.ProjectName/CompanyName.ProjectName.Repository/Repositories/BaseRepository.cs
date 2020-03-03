@@ -28,12 +28,14 @@ namespace CompanyName.ProjectName.Repository.Repositories
 
         public async Task AddAsync(T entity)
         {
+            SetCreateMetadata(entity);
             await Context.Set<T>().AddAsync(entity);
             await Context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(T entity)
         {
+            SetUpdateMetadata(entity);
             Context.Entry(entity).State = EntityState.Modified;
             await Context.SaveChangesAsync();
         }
@@ -53,5 +55,19 @@ namespace CompanyName.ProjectName.Repository.Repositories
 
         public async Task<int> CountWhereAsync(Expression<Func<T, bool>> predicate)
             => await Context.Set<T>().CountAsync(predicate);
+
+        private void SetCreateMetadata(T entity)
+        {
+            entity.CreatedBy = 0;
+            entity.CreatedOn = DateTime.Now;
+            entity.Guid = Guid.NewGuid();
+            SetUpdateMetadata(entity);
+        }
+
+        private void SetUpdateMetadata(T entity)
+        {
+            entity.ModifiedBy = 0;
+            entity.ModifiedOn = DateTime.Now;
+        }
     }
 }

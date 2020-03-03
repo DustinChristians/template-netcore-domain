@@ -7,6 +7,7 @@ using CompanyName.ProjectName.Core.Models.ResourceParameters;
 using CompanyName.ProjectName.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RepositoryMessage = CompanyName.ProjectName.Core.Models.Repositories.Message;
 
 namespace CompanyName.ProjectName.WebApi.Controllers
 {
@@ -33,7 +34,7 @@ namespace CompanyName.ProjectName.WebApi.Controllers
             return result == null ? NotFound() : (ActionResult)Ok(mapper.Map<IEnumerable<Message>>(result));
         }
 
-        [HttpGet("{messageId:int}")]
+        [HttpGet("{messageId:int}", Name = "GetMessageById")]
         public async Task<ActionResult<Message>> GetMessage(int messageId)
         {
             var result = await messagesService.MessagesRepository.GetByIdAsync(messageId);
@@ -41,12 +42,22 @@ namespace CompanyName.ProjectName.WebApi.Controllers
             return result == null ? NotFound() : (ActionResult)Ok(result);
         }
 
-        [HttpGet("{messageId:guid}")]
+        [HttpGet("{messageId:guid}", Name = "GetMessageByGuid")]
         public async Task<ActionResult<Message>> GetMessage(Guid messageId)
         {
             var result = await messagesService.MessagesRepository.GetByGuidAsync(messageId);
 
             return result == null ? NotFound() : (ActionResult)Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Message>> CreateMessage(MessageForCreation message)
+        {
+            var entity = mapper.Map<RepositoryMessage>(message);
+            await messagesService.MessagesRepository.AddAsync(entity);
+
+            var result = mapper.Map<Message>(entity);
+            return CreatedAtRoute("GetMessageById", new { messageId = result.Id }, result);
         }
     }
 }
