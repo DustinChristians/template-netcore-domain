@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
+using CompanyName.ProjectName.WebApi.Models;
+using MessageForGetting = CompanyName.ProjectName.WebApi.Models.Message;
 using RepositoryModel = CompanyName.ProjectName.Core.Models.Repositories.Message;
-using WebApiModel = CompanyName.ProjectName.WebApi.Models.Message;
 
 namespace CompanyName.ProjectName.WebApi.MappingProfiles
 {
@@ -8,7 +9,8 @@ namespace CompanyName.ProjectName.WebApi.MappingProfiles
     {
         public MessageMappingProfile()
         {
-            CreateMap<RepositoryModel, WebApiModel>();
+            CreateMap<RepositoryModel, MessageForGetting>();
+            CreateMap<MessageForCreation, RepositoryModel>();
         }
     }
 }
