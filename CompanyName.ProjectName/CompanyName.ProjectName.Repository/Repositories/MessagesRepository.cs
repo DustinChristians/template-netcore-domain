@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CompanyName.ProjectName.Core.Abstractions.Repositories;
+using CompanyName.ProjectName.Core.Extensions;
 using CompanyName.ProjectName.Core.Models.Repositories;
 using CompanyName.ProjectName.Core.Models.ResourceParameters;
+using CompanyName.ProjectName.Core.Models.Search;
 using CompanyName.ProjectName.Repository.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,28 +26,29 @@ namespace CompanyName.ProjectName.Repository.Repositories
                 throw new ArgumentNullException(nameof(MessagesResourceParameters));
             }
 
-            if (string.IsNullOrWhiteSpace(parameters.Category)
-                && string.IsNullOrWhiteSpace(parameters.SearchQuery))
+            if (parameters.AllPropertiesAreNull())
             {
                 return await GetAllAsync();
             }
 
-            var collection = Context.Messages as IQueryable<Message>;
+            return await Search()
+                .Apply(parameters, Context.Messages as IQueryable<Message>)
+                .ToListAsync();
+        }
 
-            if (!string.IsNullOrWhiteSpace(parameters.Category))
-            {
-                collection = collection.Where(x => x.Category == parameters.Category.Trim());
-            }
+        private SearchMutator<Message, MessagesResourceParameters> Search()
+        {
+            var searchMutator = new SearchMutator<Message, MessagesResourceParameters>();
 
-            if (!string.IsNullOrWhiteSpace(parameters.SearchQuery))
-            {
-                var searchQuery = parameters.SearchQuery.Trim();
+            searchMutator.AddCondition(
+                parameters => !string.IsNullOrWhiteSpace(parameters.Category),
+                (messages, parameters) => messages.Where(message => message.Category == parameters.Category));
 
-                collection = collection.Where(x => x.Category.Contains(searchQuery)
-                    || x.Text.Contains(searchQuery));
-            }
+            searchMutator.AddCondition(
+                parameters => !string.IsNullOrWhiteSpace(parameters.SearchQuery),
+                (messages, parameters) => messages.Where(u => u.Category.Contains(parameters.SearchQuery) || u.Text.Contains(parameters.SearchQuery)));
 
-            return await collection.ToListAsync();
+            return searchMutator;
         }
     }
 }
