@@ -23,16 +23,22 @@ namespace CompanyName.ProjectName.Repository.Data
                 {
                     Text = "Hello, World!",
                     Category = "special",
+                    IsActive = true,
                     Guid = Guid.NewGuid(),
+                    CreatedBy = 1,
                     CreatedOn = DateTime.Now,
+                    ModifiedBy = 1,
                     ModifiedOn = DateTime.Now
                 },
                 new Message
                 {
                     Text = "This is a sample application.",
                     Category = "generic",
+                    IsActive = true,
                     Guid = Guid.NewGuid(),
+                    CreatedBy = 1,
                     CreatedOn = DateTime.Now,
+                    ModifiedBy = 1,
                     ModifiedOn = DateTime.Now
                 },
             };
