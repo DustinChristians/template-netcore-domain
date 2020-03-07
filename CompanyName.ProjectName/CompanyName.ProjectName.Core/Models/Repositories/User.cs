@@ -6,9 +6,6 @@ namespace CompanyName.ProjectName.Core.Models.Repositories
     public class User : BaseModel
     {
         [Required]
-        public string Username { get; set; }
-
-        [Required]
         public string Email { get; set; }
 
         public string FirstName { get; set; }
