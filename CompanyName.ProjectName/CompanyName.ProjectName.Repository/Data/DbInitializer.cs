@@ -10,36 +10,75 @@ namespace CompanyName.ProjectName.Repository.Data
         {
             context.Database.EnsureCreated();
 
-            // Look for any messages.
-            if (context.Messages.Any())
+            if (!context.Messages.Any())
             {
-                return; // DB has been seeded
+                // load test data into arrays rather than List<T> collections to optimize performance.
+                var messages = new Message[]
+                {
+                    new Message
+                    {
+                        Text = "Hello, World!",
+                        Category = "special",
+                        IsActive = true,
+                        Guid = Guid.NewGuid(),
+                        CreatedBy = 1,
+                        CreatedOn = DateTime.Now,
+                        ModifiedBy = 1,
+                        ModifiedOn = DateTime.Now
+                    },
+                    new Message
+                    {
+                        Text = "This is a sample application.",
+                        Category = "generic",
+                        IsActive = true,
+                        Guid = Guid.NewGuid(),
+                        CreatedBy = 1,
+                        CreatedOn = DateTime.Now,
+                        ModifiedBy = 1,
+                        ModifiedOn = DateTime.Now
+                    },
+                };
+
+                foreach (Message s in messages)
+                {
+                    context.Messages.Add(s);
+                }
             }
 
-            // load test data into arrays rather than List<T> collections to optimize performance.
-            var messages = new Message[]
+            if (!context.Users.Any())
             {
-                new Message
+                var users = new User[]
                 {
-                    Text = "Hello, World!",
-                    Category = "special",
-                    Guid = Guid.NewGuid(),
-                    CreatedOn = DateTime.Now,
-                    ModifiedOn = DateTime.Now
-                },
-                new Message
-                {
-                    Text = "This is a sample application.",
-                    Category = "generic",
-                    Guid = Guid.NewGuid(),
-                    CreatedOn = DateTime.Now,
-                    ModifiedOn = DateTime.Now
-                },
-            };
+                    new User
+                    {
+                        Email = "bill.smith@test.com",
+                        FirstName = "Bill",
+                        LastName = "Smith",
+                        IsActive = true,
+                        Guid = Guid.NewGuid(),
+                        CreatedBy = 1,
+                        CreatedOn = DateTime.Now,
+                        ModifiedBy = 1,
+                        ModifiedOn = DateTime.Now
+                    },
+                    new User
+                    {
+                        Email = "bob.jones@test.com",
+                        FirstName = "Bob",
+                        LastName = "Jones",
+                        IsActive = true,
+                        Guid = Guid.NewGuid(),
+                        CreatedBy = 1,
+                        CreatedOn = DateTime.Now,
+                        ModifiedBy = 1,
+                        ModifiedOn = DateTime.Now
+                    },
+                };
 
-            foreach (Message s in messages)
-            {
-                context.Messages.Add(s);
+                foreach (User u in users)
+                {
+                    context.Users.Add(u);
+                }
             }
 
             context.SaveChanges();
