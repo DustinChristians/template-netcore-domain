@@ -12,17 +12,16 @@ using RepositoryMessage = CompanyName.ProjectName.Core.Models.Repositories.Messa
 namespace CompanyName.ProjectName.WebApi.Controllers
 {
     [ApiController]
-    [Route("api/messages")]
-    public class MessagesController : ControllerBase
+    public class MessagesController : BaseController<MessagesController>
     {
-        private readonly ILogger<MessagesController> logger;
-        private readonly IMapper mapper;
         private readonly IMessagesService messagesService;
 
-        public MessagesController(ILogger<MessagesController> logger, IMapper mapper, IMessagesService messagesService)
+        public MessagesController(
+            IMessagesService messagesService,
+            ILogger<MessagesController> logger,
+            IMapper mapper)
+            : base(logger, mapper)
         {
-            this.logger = logger;
-            this.mapper = mapper;
             this.messagesService = messagesService;
         }
 
