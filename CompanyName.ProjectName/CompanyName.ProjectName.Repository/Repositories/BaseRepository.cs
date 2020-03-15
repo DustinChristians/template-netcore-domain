@@ -20,6 +20,8 @@ namespace CompanyName.ProjectName.Repository.Repositories
             Context = context;
         }
 
+        public async Task<bool> ExistsAsync(int id) => await GetByIdAsync(id) != null;
+
         public async Task<T> GetByIdAsync(int id) => await Context.Set<T>().FindAsync(id);
         public async Task<T> GetByGuidAsync(Guid guid) => await FirstOrDefaultAsync(x => x.Guid == guid);
 
