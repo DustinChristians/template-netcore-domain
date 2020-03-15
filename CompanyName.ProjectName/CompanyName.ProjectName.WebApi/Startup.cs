@@ -47,6 +47,13 @@ namespace CompanyName.ProjectName.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                // Allow cross origin resource sharing for testing all development requests.
+                // This should not be done for a production build.
+                app.UseCors(builder =>
+                {
+                    builder.WithOrigins("*");
+                });
             }
             else
             {
