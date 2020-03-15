@@ -10,43 +10,9 @@ namespace CompanyName.ProjectName.Repository.Data
         {
             context.Database.EnsureCreated();
 
-            if (!context.Messages.Any())
-            {
-                // load test data into arrays rather than List<T> collections to optimize performance.
-                var messages = new Message[]
-                {
-                    new Message
-                    {
-                        Text = "Hello, World!",
-                        Category = "special",
-                        IsActive = true,
-                        Guid = Guid.NewGuid(),
-                        CreatedBy = 1,
-                        CreatedOn = DateTime.Now,
-                        ModifiedBy = 1,
-                        ModifiedOn = DateTime.Now
-                    },
-                    new Message
-                    {
-                        Text = "This is a sample application.",
-                        Category = "generic",
-                        IsActive = true,
-                        Guid = Guid.NewGuid(),
-                        CreatedBy = 1,
-                        CreatedOn = DateTime.Now,
-                        ModifiedBy = 1,
-                        ModifiedOn = DateTime.Now
-                    },
-                };
-
-                foreach (Message s in messages)
-                {
-                    context.Messages.Add(s);
-                }
-            }
-
             if (!context.Users.Any())
             {
+                // load test data into arrays rather than List<T> collections to optimize performance.
                 var users = new User[]
                 {
                     new User
@@ -79,9 +45,47 @@ namespace CompanyName.ProjectName.Repository.Data
                 {
                     context.Users.Add(u);
                 }
+
+                context.SaveChanges();
             }
 
-            context.SaveChanges();
+            if (!context.Messages.Any())
+            {
+                var messages = new Message[]
+                {
+                    new Message
+                    {
+                        Text = "Hello, Bill!",
+                        Category = "special",
+                        IsActive = true,
+                        Guid = Guid.NewGuid(),
+                        UserId = 1,
+                        CreatedBy = 1,
+                        CreatedOn = DateTime.Now,
+                        ModifiedBy = 1,
+                        ModifiedOn = DateTime.Now
+                    },
+                    new Message
+                    {
+                        Text = "Hi, Bob!",
+                        Category = "generic",
+                        IsActive = true,
+                        Guid = Guid.NewGuid(),
+                        UserId = 2,
+                        CreatedBy = 1,
+                        CreatedOn = DateTime.Now,
+                        ModifiedBy = 1,
+                        ModifiedOn = DateTime.Now
+                    },
+                };
+
+                foreach (Message s in messages)
+                {
+                    context.Messages.Add(s);
+                }
+
+                context.SaveChanges();
+            }
         }
     }
 }

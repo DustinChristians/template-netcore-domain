@@ -12,17 +12,16 @@ using RepositoryUser = CompanyName.ProjectName.Core.Models.Repositories.User;
 namespace CompanyName.ProjectName.WebApi.Controllers
 {
     [ApiController]
-    [Route("api/users")]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseController<UsersController>
     {
-        private readonly ILogger<UsersController> logger;
-        private readonly IMapper mapper;
         private readonly IUsersService usersService;
 
-        public UsersController(ILogger<UsersController> logger, IMapper mapper, IUsersService usersService)
+        public UsersController(
+            IUsersService usersService,
+            ILogger<UsersController> logger,
+            IMapper mapper)
+            : base(logger, mapper)
         {
-            this.logger = logger;
-            this.mapper = mapper;
             this.usersService = usersService;
         }
 
