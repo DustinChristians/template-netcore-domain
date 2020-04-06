@@ -54,6 +54,7 @@ namespace CompanyName.ProjectName.WebApi.Controllers
         {
             var entity = mapper.Map<RepositoryUser>(user);
             await usersService.UsersRepository.AddAsync(entity);
+            await usersService.UsersRepository.SaveChangesAsync();
 
             var result = mapper.Map<User>(entity);
             return CreatedAtRoute("GetUserById", new { userId = result.Id }, result);

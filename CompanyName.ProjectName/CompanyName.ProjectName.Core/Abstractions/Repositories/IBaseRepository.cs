@@ -14,8 +14,9 @@ namespace CompanyName.ProjectName.Core.Abstractions.Repositories
         Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
 
         Task AddAsync(T entity);
-        Task UpdateAsync(T entity);
-        Task DeleteAsync(T entity);
+        void UpdateAsync(T entity);
+        void DeleteAsync(T entity);
+        Task SaveChangesAsync();
 
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> GetWhereAsync(Expression<Func<T, bool>> predicate);

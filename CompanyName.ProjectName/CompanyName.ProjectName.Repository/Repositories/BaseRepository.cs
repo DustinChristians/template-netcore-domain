@@ -32,20 +32,17 @@ namespace CompanyName.ProjectName.Repository.Repositories
         {
             SetCreateMetadata(entity);
             await Context.Set<T>().AddAsync(entity);
-            await Context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(T entity)
+        public void UpdateAsync(T entity)
         {
             SetUpdateMetadata(entity);
             Context.Entry(entity).State = EntityState.Modified;
-            await Context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(T entity)
+        public void DeleteAsync(T entity)
         {
             Context.Set<T>().Remove(entity);
-            await Context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<T>> GetAllAsync() => await Context.Set<T>().ToListAsync();
@@ -57,6 +54,11 @@ namespace CompanyName.ProjectName.Repository.Repositories
 
         public async Task<int> CountWhereAsync(Expression<Func<T, bool>> predicate)
             => await Context.Set<T>().CountAsync(predicate);
+
+        public async Task SaveChangesAsync()
+        {
+            await Context.SaveChangesAsync();
+        }
 
         private void SetCreateMetadata(T entity)
         {

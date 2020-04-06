@@ -54,6 +54,7 @@ namespace CompanyName.ProjectName.WebApi.Controllers
         {
             var entity = mapper.Map<RepositoryMessage>(message);
             await messagesService.MessagesRepository.AddAsync(entity);
+            await messagesService.MessagesRepository.SaveChangesAsync();
 
             var result = mapper.Map<Message>(entity);
             return CreatedAtRoute("GetMessageById", new { messageId = result.Id }, result);
