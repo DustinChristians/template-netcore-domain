@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CompanyName.ProjectName.Core.Abstractions.Repositories;
 using CompanyName.ProjectName.Core.Models.Repositories;
 using CompanyName.ProjectName.Repository.Data;
+using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace CompanyName.ProjectName.Repository.Repositories
@@ -32,6 +33,21 @@ namespace CompanyName.ProjectName.Repository.Repositories
         {
             SetCreateMetadata(entity);
             await Context.Set<T>().AddAsync(entity);
+        }
+
+        public async Task BulkAddAsync(List<T> entities)
+        {
+            if (entities == null || !entities.Any())
+            {
+                return;
+            }
+
+            foreach (var entity in entities)
+            {
+                SetCreateMetadata(entity);
+            }
+
+            await Context.BulkInsertAsync(entities);
         }
 
         public void UpdateAsync(T entity)

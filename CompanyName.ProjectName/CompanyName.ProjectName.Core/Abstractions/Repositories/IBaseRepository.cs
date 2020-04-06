@@ -13,15 +13,19 @@ namespace CompanyName.ProjectName.Core.Abstractions.Repositories
         Task<T> GetByGuidAsync(Guid guid);
         Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
 
-        Task AddAsync(T entity);
-        void UpdateAsync(T entity);
-        void DeleteAsync(T entity);
-        Task SaveChangesAsync();
-
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> GetWhereAsync(Expression<Func<T, bool>> predicate);
 
         Task<int> CountAllAsync();
         Task<int> CountWhereAsync(Expression<Func<T, bool>> predicate);
+
+        Task AddAsync(T entity);
+        Task BulkAddAsync(List<T> entities);
+
+        void UpdateAsync(T entity);
+
+        void DeleteAsync(T entity);
+
+        Task SaveChangesAsync();
     }
 }
