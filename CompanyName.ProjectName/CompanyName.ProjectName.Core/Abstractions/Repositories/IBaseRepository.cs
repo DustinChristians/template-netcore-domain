@@ -9,6 +9,7 @@ namespace CompanyName.ProjectName.Core.Abstractions.Repositories
     public interface IBaseRepository<T>
         where T : BaseModel
     {
+        Task<bool> ExistsAsync(int id);
         Task<T> GetByIdAsync(int id);
         Task<T> GetByGuidAsync(Guid guid);
         Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
@@ -26,6 +27,7 @@ namespace CompanyName.ProjectName.Core.Abstractions.Repositories
         Task BulkUpdateAsync(List<T> entities);
 
         void DeleteAsync(T entity);
+        Task BulkDeleteEntities(List<T> entities);
 
         Task SaveChangesAsync();
     }

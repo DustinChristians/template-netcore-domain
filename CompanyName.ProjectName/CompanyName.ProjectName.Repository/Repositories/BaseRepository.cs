@@ -24,10 +24,21 @@ namespace CompanyName.ProjectName.Repository.Repositories
         public async Task<bool> ExistsAsync(int id) => await GetByIdAsync(id) != null;
 
         public async Task<T> GetByIdAsync(int id) => await Context.Set<T>().FindAsync(id);
+
         public async Task<T> GetByGuidAsync(Guid guid) => await FirstOrDefaultAsync(x => x.Guid == guid);
 
         public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
             => await Context.Set<T>().FirstOrDefaultAsync(predicate);
+
+        public async Task<IEnumerable<T>> GetAllAsync() => await Context.Set<T>().ToListAsync();
+
+        public async Task<IEnumerable<T>> GetWhereAsync(Expression<Func<T, bool>> predicate)
+            => await Context.Set<T>().Where(predicate).ToListAsync();
+
+        public async Task<int> CountAllAsync() => await Context.Set<T>().CountAsync();
+
+        public async Task<int> CountWhereAsync(Expression<Func<T, bool>> predicate)
+            => await Context.Set<T>().CountAsync(predicate);
 
         public async Task AddAsync(T entity)
         {
@@ -56,7 +67,7 @@ namespace CompanyName.ProjectName.Repository.Repositories
             Context.Entry(entity).State = EntityState.Modified;
         }
 
-        public virtual async Task BulkUpdateAsync(List<T> entities)
+        public async Task BulkUpdateAsync(List<T> entities)
         {
             if (entities == null || !entities.Any())
             {
@@ -76,15 +87,15 @@ namespace CompanyName.ProjectName.Repository.Repositories
             Context.Set<T>().Remove(entity);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync() => await Context.Set<T>().ToListAsync();
+        public async Task BulkDeleteEntities(List<T> entities)
+        {
+            if (entities == null || !entities.Any())
+            {
+                return;
+            }
 
-        public async Task<IEnumerable<T>> GetWhereAsync(Expression<Func<T, bool>> predicate)
-            => await Context.Set<T>().Where(predicate).ToListAsync();
-
-        public async Task<int> CountAllAsync() => await Context.Set<T>().CountAsync();
-
-        public async Task<int> CountWhereAsync(Expression<Func<T, bool>> predicate)
-            => await Context.Set<T>().CountAsync(predicate);
+            await this.Context.BulkDeleteAsync(entities);
+        }
 
         public async Task SaveChangesAsync()
         {
