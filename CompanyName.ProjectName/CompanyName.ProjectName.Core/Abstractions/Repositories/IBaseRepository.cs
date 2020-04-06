@@ -27,7 +27,7 @@ namespace CompanyName.ProjectName.Core.Abstractions.Repositories
         Task BulkUpdateAsync(List<T> entities);
 
         void DeleteAsync(T entity);
-        Task BulkDeleteEntities(List<T> entities);
+        Task BulkDeleteAsync(List<T> entities);
 
         Task SaveChangesAsync();
     }

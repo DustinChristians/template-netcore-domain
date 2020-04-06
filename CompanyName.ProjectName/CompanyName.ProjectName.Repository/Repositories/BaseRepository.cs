@@ -87,7 +87,7 @@ namespace CompanyName.ProjectName.Repository.Repositories
             Context.Set<T>().Remove(entity);
         }
 
-        public async Task BulkDeleteEntities(List<T> entities)
+        public async Task BulkDeleteAsync(List<T> entities)
         {
             if (entities == null || !entities.Any())
             {
