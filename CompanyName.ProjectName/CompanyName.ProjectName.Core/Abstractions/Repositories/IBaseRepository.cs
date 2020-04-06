@@ -23,6 +23,7 @@ namespace CompanyName.ProjectName.Core.Abstractions.Repositories
         Task BulkAddAsync(List<T> entities);
 
         void UpdateAsync(T entity);
+        Task BulkUpdateAsync(List<T> entities);
 
         void DeleteAsync(T entity);
 

@@ -56,6 +56,21 @@ namespace CompanyName.ProjectName.Repository.Repositories
             Context.Entry(entity).State = EntityState.Modified;
         }
 
+        public virtual async Task BulkUpdateAsync(List<T> entities)
+        {
+            if (entities == null || !entities.Any())
+            {
+                return;
+            }
+
+            foreach (var entity in entities)
+            {
+                SetUpdateMetadata(entity);
+            }
+
+            await this.Context.BulkUpdateAsync(entities);
+        }
+
         public void DeleteAsync(T entity)
         {
             Context.Set<T>().Remove(entity);
