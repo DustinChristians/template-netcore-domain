@@ -68,6 +68,13 @@ namespace CompanyName.ProjectName.WebApi.Controllers.Api
              new { ids = idsAsString },
              userCollectionToReturn);
         }
+
+        [HttpOptions]
+        public IActionResult GetUserCollectionsOptions()
+        {
+            Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+            return Ok();
+        }
     }
 }
 
