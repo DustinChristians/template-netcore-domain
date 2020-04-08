@@ -59,5 +59,12 @@ namespace CompanyName.ProjectName.WebApi.Controllers
             var result = mapper.Map<Message>(entity);
             return CreatedAtRoute("GetMessageById", new { messageId = result.Id }, result);
         }
+
+        [HttpOptions]
+        public IActionResult GetMessagesOptions()
+        {
+            Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+            return Ok();
+        }
     }
 }
