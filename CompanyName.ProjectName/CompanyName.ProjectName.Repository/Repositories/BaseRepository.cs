@@ -35,6 +35,28 @@ namespace CompanyName.ProjectName.Repository.Repositories
         public async Task<IEnumerable<T>> GetWhereAsync(Expression<Func<T, bool>> predicate)
             => await Context.Set<T>().Where(predicate).ToListAsync();
 
+        public async Task<IEnumerable<T>> GetByIdsAsync(IEnumerable<int> ids)
+        {
+            if (ids == null)
+            {
+                throw new ArgumentNullException(nameof(ids));
+            }
+
+            return await Context.Set<T>().Where(x => ids.Contains(x.Id))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetByGuidsAsync(IEnumerable<Guid> guids)
+        {
+            if (guids == null)
+            {
+                throw new ArgumentNullException(nameof(guids));
+            }
+
+            return await Context.Set<T>().Where(x => guids.Contains(x.Guid))
+                .ToListAsync();
+        }
+
         public async Task<int> CountAllAsync() => await Context.Set<T>().CountAsync();
 
         public async Task<int> CountWhereAsync(Expression<Func<T, bool>> predicate)

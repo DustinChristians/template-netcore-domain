@@ -16,6 +16,8 @@ namespace CompanyName.ProjectName.Core.Abstractions.Repositories
 
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> GetWhereAsync(Expression<Func<T, bool>> predicate);
+        Task<IEnumerable<T>> GetByIdsAsync(IEnumerable<int> ids);
+        Task<IEnumerable<T>> GetByGuidsAsync(IEnumerable<Guid> guids);
 
         Task<int> CountAllAsync();
         Task<int> CountWhereAsync(Expression<Func<T, bool>> predicate);
