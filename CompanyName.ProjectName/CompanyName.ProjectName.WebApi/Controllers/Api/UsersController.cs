@@ -59,5 +59,12 @@ namespace CompanyName.ProjectName.WebApi.Controllers
             var result = mapper.Map<User>(entity);
             return CreatedAtRoute("GetUserById", new { userId = result.Id }, result);
         }
+
+        [HttpOptions]
+        public IActionResult GetUsersOptions()
+        {
+            Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+            return Ok();
+        }
     }
 }
