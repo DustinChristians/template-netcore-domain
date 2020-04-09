@@ -38,7 +38,7 @@ namespace CompanyName.ProjectName.WebApi.Controllers
         {
             var result = await usersService.UsersRepository.GetByIdAsync(userId);
 
-            return result == null ? NotFound() : (ActionResult)Ok(result);
+            return result == null ? NotFound() : (ActionResult)Ok(mapper.Map<User>(result));
         }
 
         [HttpGet("{userId:guid}", Name = "GetUserByGuid")]
@@ -46,7 +46,7 @@ namespace CompanyName.ProjectName.WebApi.Controllers
         {
             var result = await usersService.UsersRepository.GetByGuidAsync(userId);
 
-            return result == null ? NotFound() : (ActionResult)Ok(result);
+            return result == null ? NotFound() : (ActionResult)Ok(mapper.Map<User>(result));
         }
 
         [HttpPost]

@@ -41,12 +41,12 @@ namespace CompanyName.ProjectName.Repository.Repositories
             var searchMutator = new SearchMutator<Message, MessagesResourceParameters>();
 
             searchMutator.AddCondition(
-                parameters => !string.IsNullOrWhiteSpace(parameters.Category),
-                (messages, parameters) => messages.Where(message => message.Category == parameters.Category));
+                parameters => parameters.ChannelId > 0,
+                (messages, parameters) => messages.Where(message => message.ChannelId == parameters.ChannelId));
 
             searchMutator.AddCondition(
                 parameters => !string.IsNullOrWhiteSpace(parameters.SearchQuery),
-                (messages, parameters) => messages.Where(u => u.Category.Contains(parameters.SearchQuery) || u.Text.Contains(parameters.SearchQuery)));
+                (messages, parameters) => messages.Where(u => u.Text.Contains(parameters.SearchQuery)));
 
             return searchMutator;
         }

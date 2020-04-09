@@ -2,7 +2,7 @@
 {
     public class MessagesResourceParameters
     {
-        public string Category { get; set; }
+        public int ChannelId { get; set; }
         public string SearchQuery { get; set; }
     }
 }

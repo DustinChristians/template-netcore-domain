@@ -56,7 +56,7 @@ namespace CompanyName.ProjectName.Repository.Data
                     new Message
                     {
                         Text = "Hello, Bill!",
-                        Category = "special",
+                        ChannelId = 1,
                         IsActive = true,
                         Guid = Guid.NewGuid(),
                         UserId = 1,
@@ -68,7 +68,7 @@ namespace CompanyName.ProjectName.Repository.Data
                     new Message
                     {
                         Text = "Hi, Bob!",
-                        Category = "generic",
+                        ChannelId = 1,
                         IsActive = true,
                         Guid = Guid.NewGuid(),
                         UserId = 2,
