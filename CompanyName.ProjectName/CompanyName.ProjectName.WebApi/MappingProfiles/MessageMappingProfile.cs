@@ -11,7 +11,7 @@ namespace CompanyName.ProjectName.WebApi.MappingProfiles
         {
             CreateMap<RepositoryModel, MessageForGetting>();
             CreateMap<MessageForCreation, RepositoryModel>();
-            CreateMap<MessageForUpdate, RepositoryModel>();
+            CreateMap<MessageForUpdate, RepositoryModel>().ReverseMap();
         }
     }
 }

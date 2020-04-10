@@ -5,8 +5,13 @@ using AutoMapper;
 using CompanyName.ProjectName.Core.Abstractions.Services;
 using CompanyName.ProjectName.Core.Models.ResourceParameters;
 using CompanyName.ProjectName.WebApi.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using RepositoryMessage = CompanyName.ProjectName.Core.Models.Repositories.Message;
 
 namespace CompanyName.ProjectName.WebApi.Controllers
@@ -50,7 +55,7 @@ namespace CompanyName.ProjectName.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Message>> CreateMessage(MessageForCreation message)
+        public async Task<ActionResult<Message>> PostMessage(MessageForCreation message)
         {
             var entity = mapper.Map<RepositoryMessage>(message);
             await messagesService.MessagesRepository.AddAsync(entity);
@@ -61,7 +66,7 @@ namespace CompanyName.ProjectName.WebApi.Controllers
         }
 
         [HttpPut("{messageId}")]
-        public async Task<ActionResult> UpdateMessage(int messageId, MessageForUpdate message)
+        public async Task<ActionResult> PutMessage(int messageId, MessageForUpdate message)
         {
             var entity = await messagesService.MessagesRepository.GetByIdAsync(messageId);
 
@@ -78,11 +83,44 @@ namespace CompanyName.ProjectName.WebApi.Controllers
             return NoContent();
         }
 
+        [HttpPatch("{messageId}")]
+        public async Task<ActionResult> PatchMessage(int messageId, JsonPatchDocument<MessageForUpdate> patchDocument)
+        {
+            var entity = await messagesService.MessagesRepository.GetByIdAsync(messageId);
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            var messageToPatch = mapper.Map<MessageForUpdate>(entity);
+            patchDocument.ApplyTo(messageToPatch, ModelState);
+
+            if (!TryValidateModel(messageToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            mapper.Map(messageToPatch, entity);
+            messagesService.MessagesRepository.UpdateAsync(entity);
+            await messagesService.MessagesRepository.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         [HttpOptions]
         public IActionResult GetMessagesOptions()
         {
             Response.Headers.Add("Allow", "GET, OPTIONS, POST");
             return Ok();
+        }
+
+        public override ActionResult ValidationProblem(
+        [ActionResultObjectValue] ModelStateDictionary modelStateDictionary)
+        {
+            var options = HttpContext.RequestServices
+                .GetRequiredService<IOptions<ApiBehaviorOptions>>();
+            return (ActionResult)options.Value.InvalidModelStateResponseFactory(ControllerContext);
         }
     }
 }
