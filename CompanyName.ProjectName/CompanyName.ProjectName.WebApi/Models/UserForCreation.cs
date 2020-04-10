@@ -4,7 +4,7 @@ namespace CompanyName.ProjectName.WebApi.Models
 {
     public class UserForCreation
     {
-        [Required]
+        [Required, EmailAddress]
         public string Email { get; set; }
         [Required]
         public string FirstName { get; set; }
