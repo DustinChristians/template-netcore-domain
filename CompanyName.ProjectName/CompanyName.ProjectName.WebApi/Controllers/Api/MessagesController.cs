@@ -62,6 +62,7 @@ namespace CompanyName.ProjectName.WebApi.Controllers
             await messagesService.MessagesRepository.SaveChangesAsync();
 
             var result = mapper.Map<Message>(entity);
+
             return CreatedAtRoute("GetMessageById", new { messageId = result.Id }, result);
         }
 
@@ -108,10 +109,27 @@ namespace CompanyName.ProjectName.WebApi.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{messageId}")]
+        public async Task<ActionResult> DeleteMessage(int messageId)
+        {
+            var entity = await messagesService.MessagesRepository.GetByIdAsync(messageId);
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            messagesService.MessagesRepository.DeleteAsync(entity);
+            await messagesService.MessagesRepository.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         [HttpOptions]
         public IActionResult GetMessagesOptions()
         {
             Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+
             return Ok();
         }
 
@@ -120,6 +138,7 @@ namespace CompanyName.ProjectName.WebApi.Controllers
         {
             var options = HttpContext.RequestServices
                 .GetRequiredService<IOptions<ApiBehaviorOptions>>();
+
             return (ActionResult)options.Value.InvalidModelStateResponseFactory(ControllerContext);
         }
     }
