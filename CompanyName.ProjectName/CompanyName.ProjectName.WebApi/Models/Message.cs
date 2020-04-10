@@ -9,5 +9,6 @@ namespace CompanyName.ProjectName.WebApi.Models
         public string Text { get; set; }
         public int ChannelId { get; set; }
         public DateTime CreatedOn { get; set; }
+        public DateTime ModifiedOn { get; set; }
     }
 }

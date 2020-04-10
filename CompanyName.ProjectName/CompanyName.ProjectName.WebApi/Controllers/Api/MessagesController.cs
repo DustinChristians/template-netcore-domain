@@ -60,6 +60,24 @@ namespace CompanyName.ProjectName.WebApi.Controllers
             return CreatedAtRoute("GetMessageById", new { messageId = result.Id }, result);
         }
 
+        [HttpPut("{messageId}")]
+        public async Task<ActionResult> UpdateMessage(int messageId, MessageForUpdate message)
+        {
+            var entity = await messagesService.MessagesRepository.GetByIdAsync(messageId);
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            mapper.Map(message, entity);
+
+            messagesService.MessagesRepository.UpdateAsync(entity);
+            await messagesService.MessagesRepository.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         [HttpOptions]
         public IActionResult GetMessagesOptions()
         {
