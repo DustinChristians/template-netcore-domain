@@ -3,10 +3,12 @@ using CompanyName.ProjectName.Repository.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 
 namespace CompanyName.ProjectName.WebApi
 {
@@ -29,7 +31,34 @@ namespace CompanyName.ProjectName.WebApi
                 // Determines if a 406 response code (an unsupprted request response type) is returned 
                 // by the API when requested by the consumer.
                 setupAction.ReturnHttpNotAcceptable = true;
-            }).AddXmlDataContractSerializerFormatters(); // Adds the XML API response format, if requested. JSON is supported by default.  
+            }).AddNewtonsoftJson(setupAction =>
+            {
+                // For converting JSON values to Microsoft.AspNetCore.JsonPatch.JsonPatchDocument
+                setupAction.SerializerSettings.ContractResolver =
+                   new CamelCasePropertyNamesContractResolver();
+            })
+            .AddXmlDataContractSerializerFormatters() // Adds the XML API response format, if requested. JSON is supported by default.  
+            .ConfigureApiBehaviorOptions(setupAction =>
+            {
+                setupAction.InvalidModelStateResponseFactory = context =>
+                {
+                    var problemDetails = new ValidationProblemDetails(context.ModelState)
+                    {
+                        Type = "modelvalidationproblem",
+                        Title = "One or more model validation errors occurred.",
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = "See the errors property for details.",
+                        Instance = context.HttpContext.Request.Path
+                    };
+
+                    problemDetails.Extensions.Add("traceId", context.HttpContext.TraceIdentifier);
+
+                    return new UnprocessableEntityObjectResult(problemDetails)
+                    {
+                        ContentTypes = { "application/problem+json" }
+                    };
+                };
+            });
 
             // Database
             services.AddDbContext<CompanyNameProjectNameContext>(options =>
