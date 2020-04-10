@@ -60,10 +60,27 @@ namespace CompanyName.ProjectName.WebApi.Controllers
             return CreatedAtRoute("GetUserById", new { userId = result.Id }, result);
         }
 
+        [HttpDelete("{userId}")]
+        public async Task<ActionResult> DeleteUser(int userId)
+        {
+            var entity = await usersService.UsersRepository.GetByIdAsync(userId);
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            usersService.UsersRepository.DeleteAsync(entity);
+            await usersService.UsersRepository.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         [HttpOptions]
         public IActionResult GetUsersOptions()
         {
             Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+
             return Ok();
         }
     }
