@@ -99,7 +99,6 @@ namespace CompanyName.ProjectName.WebApi
                     {
                         context.Response.StatusCode = 500;
                         await context.Response.WriteAsync("There was an unexpected error.");
-                        // TODO: log the fault here
                     });
                 });
             }
