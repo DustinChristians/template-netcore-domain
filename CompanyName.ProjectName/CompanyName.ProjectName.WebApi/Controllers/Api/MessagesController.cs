@@ -130,7 +130,7 @@ namespace CompanyName.ProjectName.WebApi.Controllers
         [HttpOptions]
         public IActionResult GetMessagesOptions()
         {
-            Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+            Response.Headers.Add("Allow", "DELETE, GET, HEAD, OPTIONS, PATCH, POST");
 
             return Ok();
         }

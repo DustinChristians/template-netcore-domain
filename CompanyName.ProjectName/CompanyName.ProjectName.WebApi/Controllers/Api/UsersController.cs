@@ -81,7 +81,7 @@ namespace CompanyName.ProjectName.WebApi.Controllers
         [HttpOptions]
         public IActionResult GetUsersOptions()
         {
-            Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+            Response.Headers.Add("Allow", "DELETE, GET, HEAD, OPTIONS, POST");
 
             return Ok();
         }
