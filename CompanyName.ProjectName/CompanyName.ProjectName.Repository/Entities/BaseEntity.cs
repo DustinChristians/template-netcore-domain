@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace CompanyName.ProjectName.Core.Models.Repositories
+namespace CompanyName.ProjectName.Repository.Entities
 {
-    public class BaseModel
+    public class BaseEntity
     {
         public int Id { get; set; }
         public Guid Guid { get; set; }

@@ -2,34 +2,34 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using CompanyName.ProjectName.Core.Models.Repositories;
+using CompanyName.ProjectName.Core.Models.Domain;
 
 namespace CompanyName.ProjectName.Core.Abstractions.Repositories
 {
-    public interface IBaseRepository<T>
-        where T : BaseModel
+    public interface IBaseRepository<TDomainModel>
+        where TDomainModel : BaseModel
     {
         Task<bool> ExistsAsync(int id);
-        Task<T> GetByIdAsync(int id);
-        Task<T> GetByGuidAsync(Guid guid);
-        Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
+        Task<TDomainModel> GetByIdAsync(int id);
+        Task<TDomainModel> GetByGuidAsync(Guid guid);
+        Task<TDomainModel> FirstOrDefaultAsync(Expression<Func<TDomainModel, bool>> predicate);
 
-        Task<IEnumerable<T>> GetAllAsync();
-        Task<IEnumerable<T>> GetWhereAsync(Expression<Func<T, bool>> predicate);
-        Task<IEnumerable<T>> GetByIdsAsync(IEnumerable<int> ids);
-        Task<IEnumerable<T>> GetByGuidsAsync(IEnumerable<Guid> guids);
+        Task<IEnumerable<TDomainModel>> GetAllAsync();
+        Task<IEnumerable<TDomainModel>> GetWhereAsync(Expression<Func<TDomainModel, bool>> predicate);
+        Task<IEnumerable<TDomainModel>> GetByIdsAsync(IEnumerable<int> ids);
+        Task<IEnumerable<TDomainModel>> GetByGuidsAsync(IEnumerable<Guid> guids);
 
         Task<int> CountAllAsync();
-        Task<int> CountWhereAsync(Expression<Func<T, bool>> predicate);
+        Task<int> CountWhereAsync(Expression<Func<TDomainModel, bool>> predicate);
 
-        Task AddAsync(T entity);
-        Task BulkAddAsync(List<T> entities);
+        Task AddAsync(TDomainModel entity);
+        Task BulkAddAsync(List<TDomainModel> entities);
 
-        void UpdateAsync(T entity);
-        Task BulkUpdateAsync(List<T> entities);
+        void UpdateAsync(TDomainModel entity);
+        Task BulkUpdateAsync(List<TDomainModel> entities);
 
-        void DeleteAsync(T entity);
-        Task BulkDeleteAsync(List<T> entities);
+        void DeleteAsync(TDomainModel entity);
+        Task BulkDeleteAsync(List<TDomainModel> entities);
 
         Task SaveChangesAsync();
     }

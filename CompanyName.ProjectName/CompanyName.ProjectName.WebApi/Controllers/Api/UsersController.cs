@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using CompanyName.ProjectName.Core.Abstractions.Services;
+using CompanyName.ProjectName.Core.Models.Domain;
 using CompanyName.ProjectName.Core.Models.ResourceParameters;
-using CompanyName.ProjectName.WebApi.Models;
+using CompanyName.ProjectName.WebApi.Models.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using RepositoryUser = CompanyName.ProjectName.Core.Models.Repositories.User;
 
 namespace CompanyName.ProjectName.WebApi.Controllers
 {
@@ -26,51 +26,53 @@ namespace CompanyName.ProjectName.WebApi.Controllers
         }
 
         [HttpGet, HttpHead]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers([FromQuery] UsersResourceParameters parameters)
+        public async Task<ActionResult<IEnumerable<ReadUser>>> GetUsers([FromQuery] UsersResourceParameters parameters)
         {
-            var result = await usersService.UsersRepository.GetUsersAsync(parameters);
+            var users = await usersService.UsersRepository.GetUsersAsync(parameters);
 
-            return result == null ? NotFound() : (ActionResult)Ok(mapper.Map<IEnumerable<User>>(result));
+            return users == null ? NotFound() : (ActionResult)Ok(mapper.Map<IEnumerable<ReadUser>>(users));
         }
 
         [HttpGet("{userId:int}", Name = "GetUserById")]
-        public async Task<ActionResult<User>> GetUser(int userId)
+        public async Task<ActionResult<ReadUser>> GetUser(int userId)
         {
-            var result = await usersService.UsersRepository.GetByIdAsync(userId);
+            var user = await usersService.UsersRepository.GetByIdAsync(userId);
 
-            return result == null ? NotFound() : (ActionResult)Ok(mapper.Map<User>(result));
+            return user == null ? NotFound() : (ActionResult)Ok(mapper.Map<ReadUser>(user));
         }
 
         [HttpGet("{userId:guid}", Name = "GetUserByGuid")]
-        public async Task<ActionResult<User>> GetUser(Guid userId)
+        public async Task<ActionResult<ReadUser>> GetUser(Guid userId)
         {
-            var result = await usersService.UsersRepository.GetByGuidAsync(userId);
+            var user = await usersService.UsersRepository.GetByGuidAsync(userId);
 
-            return result == null ? NotFound() : (ActionResult)Ok(mapper.Map<User>(result));
+            return user == null ? NotFound() : (ActionResult)Ok(mapper.Map<ReadUser>(user));
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateUser(UserForCreation user)
+        public async Task<ActionResult<ReadUser>> PostUser(CreateUser createUser)
         {
-            var entity = mapper.Map<RepositoryUser>(user);
-            await usersService.UsersRepository.AddAsync(entity);
+            var user = mapper.Map<User>(createUser);
+
+            await usersService.UsersRepository.AddAsync(user);
             await usersService.UsersRepository.SaveChangesAsync();
 
-            var result = mapper.Map<User>(entity);
-            return CreatedAtRoute("GetUserById", new { userId = result.Id }, result);
+            var result = mapper.Map<ReadUser>(user);
+
+            return CreatedAtRoute("GetUserByGuid", new { userId = result.Guid }, result);
         }
 
         [HttpDelete("{userId}")]
         public async Task<ActionResult> DeleteUser(int userId)
         {
-            var entity = await usersService.UsersRepository.GetByIdAsync(userId);
+            var user = await usersService.UsersRepository.GetByIdAsync(userId);
 
-            if (entity == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            usersService.UsersRepository.DeleteAsync(entity);
+            usersService.UsersRepository.DeleteAsync(user);
             await usersService.UsersRepository.SaveChangesAsync();
 
             return NoContent();

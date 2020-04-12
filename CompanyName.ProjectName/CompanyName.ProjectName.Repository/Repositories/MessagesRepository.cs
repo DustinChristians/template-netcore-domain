@@ -2,20 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using CompanyName.ProjectName.Core.Abstractions.Repositories;
 using CompanyName.ProjectName.Core.Extensions;
-using CompanyName.ProjectName.Core.Models.Repositories;
+using CompanyName.ProjectName.Core.Models.Domain;
 using CompanyName.ProjectName.Core.Models.ResourceParameters;
 using CompanyName.ProjectName.Core.Models.Search;
 using CompanyName.ProjectName.Repository.Data;
+using CompanyName.ProjectName.Repository.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CompanyName.ProjectName.Repository.Repositories
 {
-    public class MessagesRepository : BaseRepository<Message>, IMessagesRepository
+    public class MessagesRepository : BaseRepository<Message, MessageEntity>, IMessagesRepository
     {
-        public MessagesRepository(CompanyNameProjectNameContext context)
-            : base(context)
+        public MessagesRepository(CompanyNameProjectNameContext context, IMapper mapper)
+            : base(context, mapper)
         {
         }
 
@@ -31,14 +33,16 @@ namespace CompanyName.ProjectName.Repository.Repositories
                 return await GetAllAsync();
             }
 
-            return await Search()
-                .Apply(parameters, Context.Messages as IQueryable<Message>)
+            var messageEntities = await Search()
+                .Apply(parameters, Context.Messages as IQueryable<MessageEntity>)
                 .ToListAsync();
+
+            return Mapper.Map<IEnumerable<Message>>(messageEntities);
         }
 
-        private SearchMutator<Message, MessagesResourceParameters> Search()
+        private SearchMutator<MessageEntity, MessagesResourceParameters> Search()
         {
-            var searchMutator = new SearchMutator<Message, MessagesResourceParameters>();
+            var searchMutator = new SearchMutator<MessageEntity, MessagesResourceParameters>();
 
             searchMutator.AddCondition(
                 parameters => parameters.ChannelId > 0,

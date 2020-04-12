@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CompanyName.ProjectName.Core.Abstractions.Services;
-using CompanyName.ProjectName.WebApi.Models;
+using CompanyName.ProjectName.Core.Models.Domain;
+using CompanyName.ProjectName.WebApi.Models.User;
 using CompanyName.ProjectName.WebApi.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using RepositoryUser = CompanyName.ProjectName.Core.Models.Repositories.User;
 
 namespace CompanyName.ProjectName.WebApi.Controllers.Api
 {
@@ -26,47 +27,47 @@ namespace CompanyName.ProjectName.WebApi.Controllers.Api
             this.usersService = usersService;
         }
 
-        [HttpGet("({ids})", Name = "GetUserCollection")]
+        [HttpGet("({guids})", Name = "GetUserCollection")]
         public async Task<IActionResult> GetUserCollection(
         [FromRoute]
-        [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<int> ids)
+        [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> guids)
         {
-            if (ids == null)
+            if (guids == null)
             {
                 return BadRequest();
             }
 
-            var userEntities = await usersService.UsersRepository.GetByIdsAsync(ids);
+            var users = await usersService.UsersRepository.GetByGuidsAsync(guids);
 
-            if (ids.Count() != userEntities.Count())
+            if (guids.Count() != users.Count())
             {
                 return NotFound();
             }
 
-            var users = mapper.Map<IEnumerable<User>>(userEntities);
+            var readUsers = mapper.Map<IEnumerable<ReadUser>>(users);
 
-            return Ok(users);
+            return Ok(readUsers);
         }
 
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<User>>> CreateUserCollection(
-            IEnumerable<UserForCreation> userCollection)
+        public async Task<ActionResult<IEnumerable<ReadUser>>> CreateUserCollection(
+            IEnumerable<CreateUser> createUsers)
         {
-            var userEntities = mapper.Map<List<RepositoryUser>>(userCollection);
+            var users = mapper.Map<List<User>>(createUsers);
 
-            foreach (var entity in userEntities)
+            foreach (var user in users)
             {
-                await usersService.UsersRepository.AddAsync(entity);
+                await usersService.UsersRepository.AddAsync(user);
             }
 
             await usersService.UsersRepository.SaveChangesAsync();
 
-            var userCollectionToReturn = mapper.Map<IEnumerable<User>>(userEntities);
-            var idsAsString = string.Join(",", userCollectionToReturn.Select(x => x.Id));
+            var createUsersToReturn = mapper.Map<IEnumerable<ReadUser>>(users);
+            var guidsAsString = string.Join(",", createUsersToReturn.Select(x => x.Guid));
 
             return CreatedAtRoute("GetUserCollection",
-             new { ids = idsAsString },
-             userCollectionToReturn);
+             new { guids = guidsAsString },
+             createUsersToReturn);
         }
 
         [HttpOptions]

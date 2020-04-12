@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using CompanyName.ProjectName.Core.Models.Repositories;
+using CompanyName.ProjectName.Repository.Entities;
 
 namespace CompanyName.ProjectName.Repository.Data
 {
@@ -13,9 +13,9 @@ namespace CompanyName.ProjectName.Repository.Data
             if (!context.Users.Any())
             {
                 // load test data into arrays rather than List<T> collections to optimize performance.
-                var users = new User[]
+                var users = new UserEntity[]
                 {
-                    new User
+                    new UserEntity
                     {
                         Email = "bill.smith@test.com",
                         FirstName = "Bill",
@@ -27,7 +27,7 @@ namespace CompanyName.ProjectName.Repository.Data
                         ModifiedBy = 1,
                         ModifiedOn = DateTime.Now
                     },
-                    new User
+                    new UserEntity
                     {
                         Email = "bob.jones@test.com",
                         FirstName = "Bob",
@@ -41,9 +41,9 @@ namespace CompanyName.ProjectName.Repository.Data
                     },
                 };
 
-                foreach (User u in users)
+                foreach (var user in users)
                 {
-                    context.Users.Add(u);
+                    context.Users.Add(user);
                 }
 
                 context.SaveChanges();
@@ -51,9 +51,9 @@ namespace CompanyName.ProjectName.Repository.Data
 
             if (!context.Messages.Any())
             {
-                var messages = new Message[]
+                var messages = new MessageEntity[]
                 {
-                    new Message
+                    new MessageEntity
                     {
                         Text = "Hello, Bill!",
                         ChannelId = 1,
@@ -65,7 +65,7 @@ namespace CompanyName.ProjectName.Repository.Data
                         ModifiedBy = 1,
                         ModifiedOn = DateTime.Now
                     },
-                    new Message
+                    new MessageEntity
                     {
                         Text = "Hi, Bob!",
                         ChannelId = 1,
@@ -79,9 +79,9 @@ namespace CompanyName.ProjectName.Repository.Data
                     },
                 };
 
-                foreach (Message s in messages)
+                foreach (var message in messages)
                 {
-                    context.Messages.Add(s);
+                    context.Messages.Add(message);
                 }
 
                 context.SaveChanges();

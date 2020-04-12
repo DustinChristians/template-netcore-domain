@@ -62,9 +62,12 @@ namespace CompanyName.ProjectName.WebApi
 
             // Database
             services.AddDbContext<CompanyNameProjectNameContext>(options =>
-                options.UseSqlServer(
+                options
+                .UseSqlServer(
                     this.Configuration.GetConnectionString("CompanyNameProjectNameContext"),
-                    sqlServerOptions => sqlServerOptions.CommandTimeout(30)));
+                    sqlServerOptions => sqlServerOptions.CommandTimeout(30))
+                .EnableSensitiveDataLogging());
+
 
             // Register the shared dependencies in the Mapping project
             DependencyConfig.Register(services);

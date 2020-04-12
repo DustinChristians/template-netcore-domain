@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CompanyName.ProjectName.WebApi.Models
+namespace CompanyName.ProjectName.WebApi.Models.User
 {
-    public class UserForCreation
+    public class CreateUser
     {
         [Required, EmailAddress]
         public string Email { get; set; }

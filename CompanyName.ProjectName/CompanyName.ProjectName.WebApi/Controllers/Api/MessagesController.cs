@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using CompanyName.ProjectName.Core.Abstractions.Services;
+using CompanyName.ProjectName.Core.Models.Domain;
 using CompanyName.ProjectName.Core.Models.ResourceParameters;
-using CompanyName.ProjectName.WebApi.Models;
+using CompanyName.ProjectName.WebApi.Models.Message;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -12,7 +13,6 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using RepositoryMessage = CompanyName.ProjectName.Core.Models.Repositories.Message;
 
 namespace CompanyName.ProjectName.WebApi.Controllers
 {
@@ -31,70 +31,72 @@ namespace CompanyName.ProjectName.WebApi.Controllers
         }
 
         [HttpGet, HttpHead]
-        public async Task<ActionResult<IEnumerable<Message>>> GetMessages([FromQuery] MessagesResourceParameters parameters)
+        public async Task<ActionResult<IEnumerable<ReadMessage>>> GetMessages([FromQuery] MessagesResourceParameters parameters)
         {
-            var result = await messagesService.MessagesRepository.GetMessagesAsync(parameters);
+            var messages = await messagesService.MessagesRepository.GetMessagesAsync(parameters);
 
-            return result == null ? NotFound() : (ActionResult)Ok(mapper.Map<IEnumerable<Message>>(result));
+            return messages == null ? NotFound() : (ActionResult)Ok(mapper.Map<IEnumerable<ReadMessage>>(messages));
         }
 
         [HttpGet("{messageId:int}", Name = "GetMessageById")]
-        public async Task<ActionResult<Message>> GetMessage(int messageId)
+        public async Task<ActionResult<ReadMessage>> GetMessage(int messageId)
         {
-            var result = await messagesService.MessagesRepository.GetByIdAsync(messageId);
+            var message = await messagesService.MessagesRepository.GetByIdAsync(messageId);
 
-            return result == null ? NotFound() : (ActionResult)Ok(result);
+            return message == null ? NotFound() : (ActionResult)Ok(mapper.Map<ReadMessage>(message));
         }
 
         [HttpGet("{messageId:guid}", Name = "GetMessageByGuid")]
-        public async Task<ActionResult<Message>> GetMessage(Guid messageId)
+        public async Task<ActionResult<ReadMessage>> GetMessage(Guid messageId)
         {
-            var result = await messagesService.MessagesRepository.GetByGuidAsync(messageId);
+            var message = await messagesService.MessagesRepository.GetByGuidAsync(messageId);
 
-            return result == null ? NotFound() : (ActionResult)Ok(result);
+            return message == null ? NotFound() : (ActionResult)Ok(mapper.Map<ReadMessage>(message));
         }
 
         [HttpPost]
-        public async Task<ActionResult<Message>> PostMessage(MessageForCreation message)
+        public async Task<ActionResult<ReadMessage>> PostMessage(CreateMessage createMessage)
         {
-            var entity = mapper.Map<RepositoryMessage>(message);
-            await messagesService.MessagesRepository.AddAsync(entity);
+            var message = mapper.Map<Message>(createMessage);
+
+            await messagesService.MessagesRepository.AddAsync(message);
             await messagesService.MessagesRepository.SaveChangesAsync();
 
-            var result = mapper.Map<Message>(entity);
+            var result = mapper.Map<ReadMessage>(message);
 
-            return CreatedAtRoute("GetMessageById", new { messageId = result.Id }, result);
+            return CreatedAtRoute("GetMessageByGuid", new { messageId = result.Guid }, result);
         }
 
         [HttpPut("{messageId}")]
-        public async Task<ActionResult> PutMessage(int messageId, MessageForUpdate message)
+        public async Task<ActionResult> PutMessage(int messageId, UpdateMessage updateMessage)
         {
-            var entity = await messagesService.MessagesRepository.GetByIdAsync(messageId);
+            var message = await messagesService.MessagesRepository.GetByIdAsync(messageId);
 
-            if (entity == null)
+            if (message == null)
             {
                 return NotFound();
             }
 
-            mapper.Map(message, entity);
+            mapper.Map(updateMessage, message);
 
-            messagesService.MessagesRepository.UpdateAsync(entity);
+            messagesService.MessagesRepository.UpdateAsync(message);
+
             await messagesService.MessagesRepository.SaveChangesAsync();
 
             return NoContent();
         }
 
         [HttpPatch("{messageId}")]
-        public async Task<ActionResult> PatchMessage(int messageId, JsonPatchDocument<MessageForUpdate> patchDocument)
+        public async Task<ActionResult> PatchMessage(int messageId, JsonPatchDocument<UpdateMessage> patchDocument)
         {
-            var entity = await messagesService.MessagesRepository.GetByIdAsync(messageId);
+            var message = await messagesService.MessagesRepository.GetByIdAsync(messageId);
 
-            if (entity == null)
+            if (message == null)
             {
                 return NotFound();
             }
 
-            var messageToPatch = mapper.Map<MessageForUpdate>(entity);
+            var messageToPatch = mapper.Map<UpdateMessage>(message);
             patchDocument.ApplyTo(messageToPatch, ModelState);
 
             if (!TryValidateModel(messageToPatch))
@@ -102,8 +104,8 @@ namespace CompanyName.ProjectName.WebApi.Controllers
                 return ValidationProblem(ModelState);
             }
 
-            mapper.Map(messageToPatch, entity);
-            messagesService.MessagesRepository.UpdateAsync(entity);
+            mapper.Map(messageToPatch, message);
+            messagesService.MessagesRepository.UpdateAsync(message);
             await messagesService.MessagesRepository.SaveChangesAsync();
 
             return NoContent();
@@ -112,14 +114,14 @@ namespace CompanyName.ProjectName.WebApi.Controllers
         [HttpDelete("{messageId}")]
         public async Task<ActionResult> DeleteMessage(int messageId)
         {
-            var entity = await messagesService.MessagesRepository.GetByIdAsync(messageId);
+            var message = await messagesService.MessagesRepository.GetByIdAsync(messageId);
 
-            if (entity == null)
+            if (message == null)
             {
                 return NotFound();
             }
 
-            messagesService.MessagesRepository.DeleteAsync(entity);
+            messagesService.MessagesRepository.DeleteAsync(message);
             await messagesService.MessagesRepository.SaveChangesAsync();
 
             return NoContent();

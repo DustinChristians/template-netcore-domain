@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using CompanyName.ProjectName.WebApi.Attributes.Validation;
 
-namespace CompanyName.ProjectName.WebApi.Models
+namespace CompanyName.ProjectName.WebApi.Models.Message
 {
-    public class MessageForUpdate
+    public class UpdateMessage
     {
         [Required, Id]
         public int UserId { get; set; }

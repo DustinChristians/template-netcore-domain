@@ -3,77 +3,100 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AutoMapper;
 using CompanyName.ProjectName.Core.Abstractions.Repositories;
-using CompanyName.ProjectName.Core.Models.Repositories;
+using CompanyName.ProjectName.Core.Models.Domain;
 using CompanyName.ProjectName.Repository.Data;
+using CompanyName.ProjectName.Repository.Entities;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace CompanyName.ProjectName.Repository.Repositories
 {
-    public class BaseRepository<T> : IBaseRepository<T>
-        where T : BaseModel
+    public class BaseRepository<TDomainModel, TEntity> : IBaseRepository<TDomainModel>
+        where TEntity : BaseEntity
+        where TDomainModel : BaseModel
     {
         protected CompanyNameProjectNameContext Context;
+        protected IMapper Mapper;
 
-        public BaseRepository(CompanyNameProjectNameContext context)
+        public BaseRepository(CompanyNameProjectNameContext context, IMapper mapper)
         {
             Context = context;
+            Mapper = mapper;
         }
 
         public async Task<bool> ExistsAsync(int id) => await GetByIdAsync(id) != null;
 
-        public async Task<T> GetByIdAsync(int id) => await Context.Set<T>().FindAsync(id);
+        public async Task<TDomainModel> GetByIdAsync(int id) => Mapper.Map<TDomainModel>(await FirstOrDefaultAsync(x => x.Id == id));
 
-        public async Task<T> GetByGuidAsync(Guid guid) => await FirstOrDefaultAsync(x => x.Guid == guid);
+        public async Task<TDomainModel> GetByGuidAsync(Guid guid) => await FirstOrDefaultAsync(x => x.Guid == guid);
 
-        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
-            => await Context.Set<T>().FirstOrDefaultAsync(predicate);
+        public async Task<TDomainModel> FirstOrDefaultAsync(Expression<Func<TDomainModel, bool>> domainPredicate)
+        {
+            var entityPredicate = Mapper.Map<Expression<Func<TEntity, bool>>>(domainPredicate);
 
-        public async Task<IEnumerable<T>> GetAllAsync() => await Context.Set<T>().ToListAsync();
+            return Mapper.Map<TDomainModel>(await Context.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(entityPredicate));
+        }
 
-        public async Task<IEnumerable<T>> GetWhereAsync(Expression<Func<T, bool>> predicate)
-            => await Context.Set<T>().Where(predicate).ToListAsync();
+        public async Task<IEnumerable<TDomainModel>> GetAllAsync() => Mapper.Map<IEnumerable<TDomainModel>>(await Context.Set<TEntity>().AsNoTracking().ToListAsync());
 
-        public async Task<IEnumerable<T>> GetByIdsAsync(IEnumerable<int> ids)
+        public async Task<IEnumerable<TDomainModel>> GetWhereAsync(Expression<Func<TDomainModel, bool>> domainPredicate)
+        {
+            var entityPredicate = Mapper.Map<Expression<Func<TEntity, bool>>>(domainPredicate);
+
+            return Mapper.Map<IEnumerable<TDomainModel>>(await Context.Set<TEntity>().AsNoTracking().Where(entityPredicate).ToListAsync());
+        }
+
+        public async Task<IEnumerable<TDomainModel>> GetByIdsAsync(IEnumerable<int> ids)
         {
             if (ids == null)
             {
                 throw new ArgumentNullException(nameof(ids));
             }
 
-            return await Context.Set<T>().Where(x => ids.Contains(x.Id))
-                .ToListAsync();
+            return Mapper.Map<IEnumerable<TDomainModel>>(await Context.Set<TEntity>().AsNoTracking().Where(x => ids.Contains(x.Id))
+                .ToListAsync());
         }
 
-        public async Task<IEnumerable<T>> GetByGuidsAsync(IEnumerable<Guid> guids)
+        public async Task<IEnumerable<TDomainModel>> GetByGuidsAsync(IEnumerable<Guid> guids)
         {
             if (guids == null)
             {
                 throw new ArgumentNullException(nameof(guids));
             }
 
-            return await Context.Set<T>().Where(x => guids.Contains(x.Guid))
-                .ToListAsync();
+            return Mapper.Map<IEnumerable<TDomainModel>>(await Context.Set<TEntity>().AsNoTracking().Where(x => guids.Contains(x.Guid))
+                .ToListAsync());
         }
 
-        public async Task<int> CountAllAsync() => await Context.Set<T>().CountAsync();
+        public async Task<int> CountAllAsync() => await Context.Set<TEntity>().AsNoTracking().CountAsync();
 
-        public async Task<int> CountWhereAsync(Expression<Func<T, bool>> predicate)
-            => await Context.Set<T>().CountAsync(predicate);
-
-        public async Task AddAsync(T entity)
+        public async Task<int> CountWhereAsync(Expression<Func<TDomainModel, bool>> domainPredicate)
         {
+            var entityPredicate = Mapper.Map<Expression<Func<TEntity, bool>>>(domainPredicate);
+
+            return await Context.Set<TEntity>().AsNoTracking().CountAsync(entityPredicate);
+        }
+
+        public async Task AddAsync(TDomainModel domainModel)
+        {
+            var entity = Mapper.Map<TEntity>(domainModel);
+
             SetCreateMetadata(entity);
-            await Context.Set<T>().AddAsync(entity);
+            await Context.Set<TEntity>().AddAsync(entity);
+
+            Mapper.Map(entity, domainModel);
         }
 
-        public async Task BulkAddAsync(List<T> entities)
+        public async Task BulkAddAsync(List<TDomainModel> domainModels)
         {
-            if (entities == null || !entities.Any())
+            if (domainModels == null || !domainModels.Any())
             {
                 return;
             }
+
+            var entities = Mapper.Map<List<TEntity>>(domainModels);
 
             foreach (var entity in entities)
             {
@@ -83,18 +106,22 @@ namespace CompanyName.ProjectName.Repository.Repositories
             await Context.BulkInsertAsync(entities);
         }
 
-        public void UpdateAsync(T entity)
+        public void UpdateAsync(TDomainModel domainModel)
         {
+            var entity = Mapper.Map<TEntity>(domainModel);
+
             SetUpdateMetadata(entity);
             Context.Entry(entity).State = EntityState.Modified;
         }
 
-        public async Task BulkUpdateAsync(List<T> entities)
+        public async Task BulkUpdateAsync(List<TDomainModel> domainModels)
         {
-            if (entities == null || !entities.Any())
+            if (domainModels == null || !domainModels.Any())
             {
                 return;
             }
+
+            var entities = Mapper.Map<List<TEntity>>(domainModels);
 
             foreach (var entity in entities)
             {
@@ -104,17 +131,19 @@ namespace CompanyName.ProjectName.Repository.Repositories
             await this.Context.BulkUpdateAsync(entities);
         }
 
-        public void DeleteAsync(T entity)
+        public void DeleteAsync(TDomainModel domainModel)
         {
-            Context.Set<T>().Remove(entity);
+            Context.Set<TEntity>().Remove(Mapper.Map<TEntity>(domainModel));
         }
 
-        public async Task BulkDeleteAsync(List<T> entities)
+        public async Task BulkDeleteAsync(List<TDomainModel> domainModels)
         {
-            if (entities == null || !entities.Any())
+            if (domainModels == null || !domainModels.Any())
             {
                 return;
             }
+
+            var entities = Mapper.Map<List<TEntity>>(domainModels);
 
             await this.Context.BulkDeleteAsync(entities);
         }
@@ -124,18 +153,18 @@ namespace CompanyName.ProjectName.Repository.Repositories
             await Context.SaveChangesAsync();
         }
 
-        private void SetCreateMetadata(T entity)
+        private void SetCreateMetadata(TEntity entity)
         {
             entity.CreatedBy = 0;
             entity.CreatedOn = DateTime.Now;
             entity.Guid = Guid.NewGuid();
-            SetUpdateMetadata(entity);
+            SetUpdateMetadata(entity, entity.CreatedOn);
         }
 
-        private void SetUpdateMetadata(T entity)
+        private void SetUpdateMetadata(TEntity entity, DateTime? modified = null)
         {
             entity.ModifiedBy = 0;
-            entity.ModifiedOn = DateTime.Now;
+            entity.ModifiedOn = modified.HasValue ? modified.Value : DateTime.Now;
         }
     }
 }

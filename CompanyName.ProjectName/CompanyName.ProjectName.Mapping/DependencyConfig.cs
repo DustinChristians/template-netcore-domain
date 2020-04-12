@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using AutoMapper;
+using AutoMapper.Extensions.ExpressionMapping;
 using CompanyName.ProjectName.Core.Abstractions.Repositories;
 using CompanyName.ProjectName.Core.Abstractions.Services;
 using CompanyName.ProjectName.Infrastructure.Services;
@@ -27,6 +28,7 @@ namespace CompanyName.ProjectName.Mapping
                     cfg.AddMaps("CompanyName.ProjectName.Infrastructure");
                     cfg.AddMaps("CompanyName.ProjectName.Repository");
                     cfg.AddMaps("CompanyName.ProjectName.WebApi");
+                    cfg.AddExpressionMapping();
                     cfg.ConstructServicesUsing(
                         type => ActivatorUtilities.CreateInstance(services.BuildServiceProvider(), type));
                 });

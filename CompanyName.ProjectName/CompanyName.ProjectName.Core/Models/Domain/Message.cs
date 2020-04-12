@@ -1,4 +1,4 @@
-﻿namespace CompanyName.ProjectName.Core.Models.Repositories
+﻿namespace CompanyName.ProjectName.Core.Models.Domain
 {
     public class Message : BaseModel
     {

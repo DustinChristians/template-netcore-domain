@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace CompanyName.ProjectName.Core.Models.Repositories
+namespace CompanyName.ProjectName.Repository.Entities
 {
-    public class User : BaseModel
+    public class UserEntity : BaseEntity
     {
         [Required]
         public string Email { get; set; }
@@ -12,7 +12,7 @@ namespace CompanyName.ProjectName.Core.Models.Repositories
 
         public string LastName { get; set; }
 
-        public ICollection<Message> Messages { get; set; }
-            = new List<Message>();
+        public ICollection<MessageEntity> Messages { get; set; }
+            = new List<MessageEntity>();
     }
 }

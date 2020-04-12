@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using CompanyName.ProjectName.WebApi.Models;
-using RepositoryModel = CompanyName.ProjectName.Core.Models.Repositories.User;
-using UserForGetting = CompanyName.ProjectName.WebApi.Models.User;
+using CompanyName.ProjectName.Core.Models.Domain;
+using CompanyName.ProjectName.WebApi.Models.User;
 
 namespace CompanyName.ProjectName.WebApi.MappingProfiles
 {
@@ -9,8 +8,8 @@ namespace CompanyName.ProjectName.WebApi.MappingProfiles
     {
         public UserMappingProfile()
         {
-            CreateMap<RepositoryModel, UserForGetting>();
-            CreateMap<UserForCreation, RepositoryModel>();
+            CreateMap<ReadUser, User>().ReverseMap();
+            CreateMap<CreateUser, User>().ReverseMap();
         }
     }
 }

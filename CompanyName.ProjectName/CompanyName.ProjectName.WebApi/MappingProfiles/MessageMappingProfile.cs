@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using CompanyName.ProjectName.WebApi.Models;
-using MessageForGetting = CompanyName.ProjectName.WebApi.Models.Message;
-using RepositoryModel = CompanyName.ProjectName.Core.Models.Repositories.Message;
+using CompanyName.ProjectName.Core.Models.Domain;
+using CompanyName.ProjectName.WebApi.Models.Message;
 
 namespace CompanyName.ProjectName.WebApi.MappingProfiles
 {
@@ -9,9 +8,9 @@ namespace CompanyName.ProjectName.WebApi.MappingProfiles
     {
         public MessageMappingProfile()
         {
-            CreateMap<RepositoryModel, MessageForGetting>();
-            CreateMap<MessageForCreation, RepositoryModel>();
-            CreateMap<MessageForUpdate, RepositoryModel>().ReverseMap();
+            CreateMap<ReadMessage, Message>().ReverseMap();
+            CreateMap<CreateMessage, Message>().ReverseMap();
+            CreateMap<UpdateMessage, Message>().ReverseMap();
         }
     }
 }
