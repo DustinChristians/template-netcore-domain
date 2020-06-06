@@ -1,5 +1,6 @@
 using CompanyName.ProjectName.Mapping;
 using CompanyName.ProjectName.Repository.Data;
+using CompanyName.ProjectName.WebApi.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -68,6 +69,8 @@ namespace CompanyName.ProjectName.WebApi
                     sqlServerOptions => sqlServerOptions.CommandTimeout(30))
                 .EnableSensitiveDataLogging());
 
+            // For catching, logging and returning appropriate controller related errors
+            services.AddScoped<ApiExceptionFilter>();
 
             // Register the shared dependencies in the Mapping project
             DependencyConfig.Register(services);
