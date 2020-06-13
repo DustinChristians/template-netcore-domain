@@ -22,13 +22,13 @@ namespace CompanyName.ProjectName.WebApi
         {
             try
             {
-                var host = CreateHostBuilder(args).Build();
-
-                SeedDatabase(host);
-
                 CreateLogger();
 
                 Log.Information("Starting Up");
+
+                var host = CreateHostBuilder(args).Build();
+
+                SeedDatabase(host);
 
                 host.Run();
             }
