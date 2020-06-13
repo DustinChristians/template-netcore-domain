@@ -72,6 +72,7 @@ namespace CompanyName.ProjectName.WebApi
         public static void CreateLogger()
         {
             Log.Logger = new LoggerConfiguration()
+                // Add/Update configuration settings in appsettings.json. Don't add them here.
                 .ReadFrom.Configuration(Configuration)
                 .Enrich.FromLogContext()
                 .CreateLogger();
