@@ -1,6 +1,10 @@
+using System;
 using CompanyName.ProjectName.Mapping;
 using CompanyName.ProjectName.Repository.Data;
 using CompanyName.ProjectName.WebApi.Filters;
+using CompanyName.ProjectName.WebApi.Scheduler;
+using Hangfire;
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -71,6 +75,24 @@ namespace CompanyName.ProjectName.WebApi
                     sqlServerOptions => sqlServerOptions.CommandTimeout(30))
                 .EnableSensitiveDataLogging());
 
+            // Add Hangfire services.
+            services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnection"), new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    UsePageLocksOnDequeue = true,
+                    DisableGlobalLocks = true
+                }));
+
+            // Add the processing server as IHostedService
+            services.AddHangfireServer();
+
             // For catching, logging and returning appropriate controller related errors
             services.AddScoped<ApiExceptionFilter>();
 
@@ -83,7 +105,7 @@ namespace CompanyName.ProjectName.WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IBackgroundJobClient backgroundJobs, ILoggerFactory loggerFactory, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -111,6 +133,10 @@ namespace CompanyName.ProjectName.WebApi
                     });
                 });
             }
+
+            app.UseHangfireDashboard();
+            // backgroundJobs.Enqueue(() => Console.WriteLine("Hello world from Hangfire!"));
+            TaskScheduler.ScheduleRecurringTasks();
 
             // Add Serilog to the Logging Pipeline
             loggerFactory.AddSerilog();
