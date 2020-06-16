@@ -5,7 +5,9 @@ using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
 using CompanyName.ProjectName.Core.Abstractions.Repositories;
 using CompanyName.ProjectName.Core.Abstractions.Services;
+using CompanyName.ProjectName.Core.Abstractions.Tasks.Logging;
 using CompanyName.ProjectName.Infrastructure.Services;
+using CompanyName.ProjectName.Infrastructure.Tasks.Logging;
 using CompanyName.ProjectName.Repository.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -42,6 +44,7 @@ namespace CompanyName.ProjectName.Mapping
         private static void AddDependenciesAutomatically(IServiceCollection services)
         {
             RegisterInterfaces("Service", services, Assembly.GetAssembly(typeof(IMessagesService)), Assembly.GetAssembly(typeof(MessagesService)));
+            RegisterInterfaces("Task", services, Assembly.GetAssembly(typeof(IDatabaseEventLogCleanupTask)), Assembly.GetAssembly(typeof(DatabaseEventLogCleanupTask)));
             RegisterInterfaces("Repository", services, Assembly.GetAssembly(typeof(IMessagesRepository)), Assembly.GetAssembly(typeof(MessagesRepository)));
         }
 
