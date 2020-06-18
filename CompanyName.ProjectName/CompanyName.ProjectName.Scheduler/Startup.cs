@@ -28,7 +28,7 @@ namespace CompanyName.ProjectName.Scheduler
                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                 .UseSimpleAssemblyNameTypeSerializer()
                 .UseRecommendedSerializerSettings()
-                .UseSqlServerStorage(Configuration.GetConnectionString("SchedulerConnection"), new SqlServerStorageOptions
+                .UseSqlServerStorage(Configuration.GetConnectionString("CompanyName.ProjectName.Repository"), new SqlServerStorageOptions
                 {
                     CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
                     SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
@@ -42,7 +42,7 @@ namespace CompanyName.ProjectName.Scheduler
             services.AddHangfireServer();
 
             // Register the shared dependencies in the Mapping project
-            DependencyConfig.Register(services);
+            DependencyConfig.Register(services, Configuration, System.Reflection.Assembly.GetEntryAssembly().GetName().Name);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

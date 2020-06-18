@@ -8,28 +8,43 @@ using CompanyName.ProjectName.Core.Abstractions.Services;
 using CompanyName.ProjectName.Core.Abstractions.Tasks.Logging;
 using CompanyName.ProjectName.Infrastructure.Services;
 using CompanyName.ProjectName.Infrastructure.Tasks.Logging;
+using CompanyName.ProjectName.Repository.Data;
 using CompanyName.ProjectName.Repository.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CompanyName.ProjectName.Mapping
 {
     public class DependencyConfig
     {
-        public static void Register(IServiceCollection services)
+        public static void Register(IServiceCollection services, IConfiguration configuration, string projectAssemblyName)
         {
+            AddDatabases(services, configuration);
             AddDependenciesAutomatically(services);
-            ConfigureAutomapper(services);
+            ConfigureAutomapper(services, projectAssemblyName);
+        }
+
+        private static void AddDatabases(IServiceCollection services, IConfiguration configuration)
+        {
+            // Database
+            services.AddDbContext<CompanyNameProjectNameContext>(options =>
+                options
+                .UseSqlServer(
+                    configuration.GetConnectionString("CompanyName.ProjectName.Repository"),
+                    sqlServerOptions => sqlServerOptions.CommandTimeout(30))
+                .EnableSensitiveDataLogging());
         }
 
         // Add any Assembly Names that need to be scanned for AutoMapper Mapping Profiles here
-        private static void ConfigureAutomapper(IServiceCollection services)
+        private static void ConfigureAutomapper(IServiceCollection services, string projectAssemblyName)
         {
             var mappingConfig = new MapperConfiguration(
                 cfg =>
                 {
+                    cfg.AddMaps(projectAssemblyName);
                     cfg.AddMaps("CompanyName.ProjectName.Infrastructure");
                     cfg.AddMaps("CompanyName.ProjectName.Repository");
-                    cfg.AddMaps("CompanyName.ProjectName.WebApi");
                     cfg.AddExpressionMapping();
                     cfg.ConstructServicesUsing(
                         type => ActivatorUtilities.CreateInstance(services.BuildServiceProvider(), type));

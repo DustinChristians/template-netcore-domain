@@ -2,7 +2,7 @@
 using CompanyName.ProjectName.Infrastructure.Tasks.Logging;
 using Hangfire;
 
-namespace CompanyName.ProjectName.WebApi.Scheduler
+namespace CompanyName.ProjectName.Scheduler
 {
     public class TaskScheduler
     {
@@ -19,6 +19,8 @@ namespace CompanyName.ProjectName.WebApi.Scheduler
             RecurringJob.AddOrUpdate<IDatabaseEventLogCleanupTask>(nameof(DatabaseEventLogCleanupTask),
             task => task.DeleteOldEventLogs(),
             "0 */5 * ? * *");
+
+            // Add more tasks here
         }
     }
 }
