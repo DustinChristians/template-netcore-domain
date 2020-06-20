@@ -8,6 +8,7 @@ using CompanyName.ProjectName.Core.Abstractions.Services;
 using CompanyName.ProjectName.Core.Abstractions.Tasks.Logging;
 using CompanyName.ProjectName.Infrastructure.Services;
 using CompanyName.ProjectName.Infrastructure.Tasks.Logging;
+using CompanyName.ProjectName.Logger;
 using CompanyName.ProjectName.Repository.Data;
 using CompanyName.ProjectName.Repository.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -23,11 +24,11 @@ namespace CompanyName.ProjectName.Mapping
             AddDatabases(services, configuration);
             AddDependenciesAutomatically(services);
             ConfigureAutomapper(services, projectAssemblyName);
+            LoggerConfig.AddDependencies(services);
         }
 
         private static void AddDatabases(IServiceCollection services, IConfiguration configuration)
         {
-            // Database
             services.AddDbContext<CompanyNameProjectNameContext>(options =>
                 options
                 .UseSqlServer(
