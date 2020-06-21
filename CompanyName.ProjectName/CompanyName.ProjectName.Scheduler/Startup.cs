@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace CompanyName.ProjectName.Scheduler
 {
@@ -46,12 +47,15 @@ namespace CompanyName.ProjectName.Scheduler
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // Add logging to the request pipeline
+            LoggerConfig.Configure(loggerFactory);
 
             app.UseHangfireDashboard();
             TaskScheduler.ScheduleRecurringTasks();

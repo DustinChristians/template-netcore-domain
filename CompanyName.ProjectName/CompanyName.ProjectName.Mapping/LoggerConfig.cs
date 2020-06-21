@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 
-namespace CompanyName.ProjectName.Logger
+namespace CompanyName.ProjectName.Mapping
 {
     public class LoggerConfig
     {
@@ -18,8 +18,7 @@ namespace CompanyName.ProjectName.Logger
         public static Serilog.ILogger CreateLogger()
         {
             return new LoggerConfiguration()
-                // Add/Update configuration settings in appsettings.json. Don't add them here.
-                .ReadFrom.Configuration(Configuration)
+                .ReadFrom.Configuration(Configuration) // modify configuration settings in appsettings.json
                 .Enrich.FromLogContext()
                 .CreateLogger();
         }

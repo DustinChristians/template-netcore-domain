@@ -9,7 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
-using Serilog;
 
 namespace CompanyName.ProjectName.WebApi
 {
@@ -64,10 +63,6 @@ namespace CompanyName.ProjectName.WebApi
             // For catching, logging and returning appropriate controller related errors
             services.AddScoped<ApiExceptionFilter>();
 
-            // Give the Serilog CorrelationId Enricher access to the requests HttpContext so that it 
-            // can attach the correlation ID to the request/response.
-            services.AddHttpContextAccessor();
-
             // Register the shared dependencies in the Mapping project
             DependencyConfig.Register(services, Configuration, System.Reflection.Assembly.GetEntryAssembly().GetName().Name);
         }
@@ -102,8 +97,8 @@ namespace CompanyName.ProjectName.WebApi
                 });
             }
 
-            // Add Serilog to the Logging Pipeline
-            loggerFactory.AddSerilog();
+            // Add logging to the request pipeline
+            LoggerConfig.Configure(loggerFactory);
 
             // Adds middleware for redirecting HTTP requests to HTTPS
             app.UseHttpsRedirection();
