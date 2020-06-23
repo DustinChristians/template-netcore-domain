@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using CompanyName.ProjectName.Mapping;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace CompanyName.ProjectName.Scheduler
 {
@@ -13,14 +10,38 @@ namespace CompanyName.ProjectName.Scheduler
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            try
+            {
+                // Will create a file logger before the database exists
+                Log.Logger = LoggerConfig.CreateLogger();
+
+                Log.Information("Starting Up");
+
+                var host = CreateHostBuilder(args).Build();
+
+                DatabaseConfig.SeedDatabases(host);
+
+                // Will create a database logger now that the database exists
+                Log.Logger = LoggerConfig.CreateLogger();
+
+                host.Run();
+            }
+            catch (Exception exception)
+            {
+                Log.Fatal(exception, "Application start-up failed");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>()
+                    .UseSerilog();
                 });
     }
 }
