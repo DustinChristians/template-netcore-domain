@@ -11,8 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CompanyName.ProjectName.Core\CompanyName.ProjectName.Core.csproj" />
-    <ProjectReference Include="..\CompanyName.ProjectName.Infrastructure\CompanyName.ProjectName.Infrastructure.csproj" />
     <ProjectReference Include="..\CompanyName.ProjectName.Mapping\CompanyName.ProjectName.Mapping.csproj" />
   </ItemGroup>
 
