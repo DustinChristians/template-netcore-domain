@@ -6,6 +6,7 @@ using AutoMapper.Extensions.ExpressionMapping;
 using CompanyName.ProjectName.Core.Abstractions.Repositories;
 using CompanyName.ProjectName.Core.Abstractions.Services;
 using CompanyName.ProjectName.Core.Abstractions.Tasks.Logging;
+using CompanyName.ProjectName.Core.Types;
 using CompanyName.ProjectName.Infrastructure.Services;
 using CompanyName.ProjectName.Infrastructure.Tasks.Logging;
 using CompanyName.ProjectName.Repository.Repositories;
@@ -47,11 +48,11 @@ namespace CompanyName.ProjectName.Mapping
         private static void AddDependenciesAutomatically(IServiceCollection services)
         {
             RegisterInterfaces("Service", services, Assembly.GetAssembly(typeof(IMessagesService)), Assembly.GetAssembly(typeof(MessagesService)));
-            RegisterInterfaces("Task", services, Assembly.GetAssembly(typeof(IDatabaseEventLogCleanupTask)), Assembly.GetAssembly(typeof(DatabaseEventLogCleanupTask)));
+            RegisterInterfaces("Task", services, Assembly.GetAssembly(typeof(IDatabaseEventLogCleanupTask)), Assembly.GetAssembly(typeof(DatabaseEventLogCleanupTask)), DependencyTypes.Transient);
             RegisterInterfaces("Repository", services, Assembly.GetAssembly(typeof(IMessagesRepository)), Assembly.GetAssembly(typeof(MessagesRepository)));
         }
 
-        private static void RegisterInterfaces(string interfaceType, IServiceCollection services, Assembly coreAssembly, Assembly serviceAssembly)
+        private static void RegisterInterfaces(string interfaceType, IServiceCollection services, Assembly coreAssembly, Assembly serviceAssembly, DependencyTypes type = DependencyTypes.Scoped)
         {
             var matches = serviceAssembly.GetTypes()
                .Where(t => t.Name.EndsWith(interfaceType, StringComparison.Ordinal) && t.GetInterfaces().Any(i => i.Assembly == coreAssembly))
@@ -64,7 +65,18 @@ namespace CompanyName.ProjectName.Mapping
             // Registers the interface to the implementation.
             foreach (var match in matches)
             {
-                services.AddScoped(match.serviceType, match.implementingType);
+                switch (type)
+                {
+                    case DependencyTypes.Scoped:
+                        services.AddScoped(match.serviceType, match.implementingType);
+                        break;
+                    case DependencyTypes.Singleton:
+                        services.AddSingleton(match.serviceType, match.implementingType);
+                        break;
+                    case DependencyTypes.Transient:
+                        services.AddTransient(match.serviceType, match.implementingType);
+                        break;
+                }
             }
         }
     }
