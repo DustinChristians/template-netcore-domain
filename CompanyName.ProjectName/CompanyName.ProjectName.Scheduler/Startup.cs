@@ -1,5 +1,6 @@
 using System;
 using CompanyName.ProjectName.Mapping;
+using CompanyName.ProjectName.Scheduler.Abstractions;
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Builder;
@@ -42,12 +43,14 @@ namespace CompanyName.ProjectName.Scheduler
             // Add the processing server as IHostedService
             services.AddHangfireServer();
 
+            services.AddTransient<ITaskScheduler, TaskScheduler>();
+
             // Register the shared dependencies in the Mapping project
             DependencyConfig.Register(services, Configuration, System.Reflection.Assembly.GetEntryAssembly().GetName().Name);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IWebHostEnvironment env, ITaskScheduler taskScheduler)
         {
             if (env.IsDevelopment())
             {
@@ -58,7 +61,8 @@ namespace CompanyName.ProjectName.Scheduler
             LoggerConfig.Configure(loggerFactory);
 
             app.UseHangfireDashboard();
-            TaskScheduler.ScheduleRecurringTasks();
+
+            taskScheduler.ScheduleRecurringTasks();
 
             app.UseRouting();
         }
