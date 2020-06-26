@@ -1,7 +1,7 @@
 ﻿using CompanyName.ProjectName.Core.Abstractions.Tasks.Logging;
-using CompanyName.ProjectName.Infrastructure.Tasks.Logging;
 using CompanyName.ProjectName.Scheduler.Abstractions;
 using CompanyName.ProjectName.Scheduler.Constants;
+using CompanyName.ProjectName.Scheduler.Tasks.Logging;
 using Hangfire;
 using Microsoft.Extensions.Configuration;
 
