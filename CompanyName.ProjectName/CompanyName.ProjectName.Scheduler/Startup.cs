@@ -46,7 +46,10 @@ namespace CompanyName.ProjectName.Scheduler
             services.AddTransient<ITaskScheduler, TaskScheduler>();
 
             // Register the shared dependencies in the Mapping project
-            DependencyConfig.Register(services, Configuration, System.Reflection.Assembly.GetEntryAssembly().GetName().Name);
+            Mapping.DependencyConfig.Register(services, Configuration, System.Reflection.Assembly.GetEntryAssembly().GetName().Name);
+
+            // Register the task dependencies for the scheduler
+            DependencyConfig.Register(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
