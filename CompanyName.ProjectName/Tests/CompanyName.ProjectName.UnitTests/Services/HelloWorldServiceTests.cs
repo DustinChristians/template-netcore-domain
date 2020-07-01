@@ -1,5 +1,4 @@
-﻿using CompanyName.ProjectName.Infrastructure.Services;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace CompanyName.ProjectName.UnitTests
 {
@@ -14,10 +13,6 @@ namespace CompanyName.ProjectName.UnitTests
         [Test]
         public void Test1()
         {
-            var helloWorldService = new MessagesService();
-            var result = helloWorldService.GetHelloWorldModel();
-
-            Assert.IsTrue(string.Equals(result.Name, "Hello, World!"));
         }
     }
 }
