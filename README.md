@@ -19,6 +19,11 @@ Configurations for dependency injection and auto-mapper to be shared across proj
 ## CompanyName.ProjectName.Repository
 This repository uses Entity Framework Core and the Repository Pattern for CRUD operations to a database.
 
+### Running Code First Migrations
+1. Open the Package Manager Console window in Visual Studio.
+2. Set the Default project at the top of the console window to: `CompanyName.ProjectName.Repository`
+3. Run the command: `Add-Migration NameOfYourMigration --verbose -startupproject CompanyName.ProjectName.WebApi`
+
 ## CompanyName.ProjectName.WebApi
 A RESTful Web Api project for communication with a UI layer. 
  
