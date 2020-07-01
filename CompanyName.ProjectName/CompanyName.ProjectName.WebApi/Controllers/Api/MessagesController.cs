@@ -30,7 +30,8 @@ namespace CompanyName.ProjectName.WebApi.Controllers
             this.messagesService = messagesService;
         }
 
-        [HttpGet, HttpHead]
+        [HttpGet]
+        [HttpHead]
         public async Task<ActionResult<IEnumerable<ReadMessage>>> GetMessages([FromQuery] MessagesResourceParameters parameters)
         {
             var messages = await messagesService.MessagesRepository.GetMessagesAsync(parameters);

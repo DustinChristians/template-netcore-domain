@@ -17,7 +17,6 @@ namespace CompanyName.ProjectName.WebApi.Filters
         /// <summary>
         /// A controller exception handler for more specific API related error handling.
         /// </summary>
-        /// <param name="filterContext"></param>
         public override void OnException(ExceptionContext filterContext)
         {
             if (filterContext.Exception != null)

@@ -28,7 +28,7 @@ namespace CompanyName.ProjectName.WebApi
             // This method will not register services used for views or pages.
             services.AddControllers(setupAction =>
             {
-                // Determines if a 406 response code (an unsupprted request response type) is returned 
+                // Determines if a 406 response code (an unsupprted request response type) is returned
                 // by the API when requested by the consumer.
                 setupAction.ReturnHttpNotAcceptable = true;
             }).AddNewtonsoftJson(setupAction =>
@@ -37,7 +37,7 @@ namespace CompanyName.ProjectName.WebApi
                 setupAction.SerializerSettings.ContractResolver =
                    new CamelCasePropertyNamesContractResolver();
             })
-            .AddXmlDataContractSerializerFormatters() // Adds the XML API response format, if requested. JSON is supported by default.  
+            .AddXmlDataContractSerializerFormatters() // Adds the XML API response format, if requested. JSON is supported by default.
             .ConfigureApiBehaviorOptions(setupAction =>
             {
                 setupAction.InvalidModelStateResponseFactory = context =>
@@ -83,9 +83,9 @@ namespace CompanyName.ProjectName.WebApi
             }
             else
             {
-                // In a non-development environment, this adds middleware to the pipeline that 
-                // will catch exceptions, log them, and re-execute the request in an 
-                // alternate pipeline. The request will not be re-executed if the response has 
+                // In a non-development environment, this adds middleware to the pipeline that
+                // will catch exceptions, log them, and re-execute the request in an
+                // alternate pipeline. The request will not be re-executed if the response has
                 // already started.
                 app.UseExceptionHandler(appBuilder =>
                 {
