@@ -4,7 +4,7 @@ using CompanyName.ProjectName.WebApi.Models.User;
 
 namespace CompanyName.ProjectName.WebApi.MappingProfiles
 {
-    class UserMappingProfile : Profile
+    public class UserMappingProfile : Profile
     {
         public UserMappingProfile()
         {

@@ -4,7 +4,7 @@ using CompanyName.ProjectName.WebApi.Models.Message;
 
 namespace CompanyName.ProjectName.WebApi.MappingProfiles
 {
-    class MessageMappingProfile : Profile
+    public class MessageMappingProfile : Profile
     {
         public MessageMappingProfile()
         {

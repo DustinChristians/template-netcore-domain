@@ -30,7 +30,7 @@ namespace CompanyName.ProjectName.WebApi.Controllers.Api
         [HttpGet("({guids})", Name = "GetUserCollection")]
         public async Task<IActionResult> GetUserCollection(
         [FromRoute]
-        [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> guids)
+        [ModelBinder(BinderType = typeof(ArrayModelBinderUtility))] IEnumerable<Guid> guids)
         {
             if (guids == null)
             {
@@ -65,9 +65,10 @@ namespace CompanyName.ProjectName.WebApi.Controllers.Api
             var createUsersToReturn = mapper.Map<IEnumerable<ReadUser>>(users);
             var guidsAsString = string.Join(",", createUsersToReturn.Select(x => x.Guid));
 
-            return CreatedAtRoute("GetUserCollection",
-             new { guids = guidsAsString },
-             createUsersToReturn);
+            return CreatedAtRoute(
+                "GetUserCollection",
+                new { guids = guidsAsString },
+                createUsersToReturn);
         }
 
         [HttpOptions]
@@ -78,4 +79,3 @@ namespace CompanyName.ProjectName.WebApi.Controllers.Api
         }
     }
 }
-

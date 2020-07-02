@@ -5,11 +5,13 @@ namespace CompanyName.ProjectName.WebApi.Models.Message
 {
     public class UpdateMessage
     {
-        [Required, Id]
+        [Required]
+        [IdValidation]
         public int UserId { get; set; }
         [Required]
         public string Text { get; set; }
-        [Required, Id]
+        [Required]
+        [IdValidation]
         public int ChannelId { get; set; }
     }
 }

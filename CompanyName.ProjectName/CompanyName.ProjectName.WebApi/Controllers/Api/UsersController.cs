@@ -25,7 +25,8 @@ namespace CompanyName.ProjectName.WebApi.Controllers
             this.usersService = usersService;
         }
 
-        [HttpGet, HttpHead]
+        [HttpGet]
+        [HttpHead]
         public async Task<ActionResult<IEnumerable<ReadUser>>> GetUsers([FromQuery] UsersResourceParameters parameters)
         {
             var users = await usersService.UsersRepository.GetUsersAsync(parameters);

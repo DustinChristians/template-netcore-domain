@@ -22,5 +22,9 @@
     <ProjectReference Include="..\CompanyName.ProjectName.Mapping\CompanyName.ProjectName.Mapping.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Attributes\Validation\" />
+  </ItemGroup>
+
 
 </Project>

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CompanyName.ProjectName.WebApi.Attributes.Validation
 {
-    public class Id : ValidationAttribute
+    public class IdValidationAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(
             object value,
