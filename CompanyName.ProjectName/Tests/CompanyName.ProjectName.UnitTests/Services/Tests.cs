@@ -3,7 +3,7 @@
 namespace CompanyName.ProjectName.UnitTests
 {
     [TestFixture]
-    public class HelloWorldServiceTests
+    public class Tests
     {
         [SetUp]
         public void Setup()
@@ -13,6 +13,7 @@ namespace CompanyName.ProjectName.UnitTests
         [Test]
         public void Test1()
         {
+            Assert.Pass();
         }
     }
 }
