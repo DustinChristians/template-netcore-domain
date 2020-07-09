@@ -57,7 +57,7 @@ namespace CompanyName.ProjectName.WebApi.Controllers.Api
 
             foreach (var user in users)
             {
-                await usersService.UsersRepository.AddAsync(user);
+                await usersService.UsersRepository.CreateAsync(user);
             }
 
             await usersService.UsersRepository.SaveChangesAsync();

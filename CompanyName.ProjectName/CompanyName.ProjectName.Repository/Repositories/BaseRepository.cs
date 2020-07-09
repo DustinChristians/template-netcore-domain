@@ -79,7 +79,7 @@ namespace CompanyName.ProjectName.Repository.Repositories
             return await Context.Set<TEntity>().AsNoTracking().CountAsync(entityPredicate);
         }
 
-        public async Task AddAsync(TDomainModel domainModel)
+        public async Task CreateAsync(TDomainModel domainModel)
         {
             var entity = Mapper.Map<TEntity>(domainModel);
 
@@ -89,7 +89,7 @@ namespace CompanyName.ProjectName.Repository.Repositories
             Mapper.Map(entity, domainModel);
         }
 
-        public async Task BulkAddAsync(List<TDomainModel> domainModels)
+        public async Task BulkCreateAsync(List<TDomainModel> domainModels)
         {
             if (domainModels == null || !domainModels.Any())
             {

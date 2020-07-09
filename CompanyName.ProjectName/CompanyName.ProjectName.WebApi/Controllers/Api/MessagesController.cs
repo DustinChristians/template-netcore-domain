@@ -60,7 +60,7 @@ namespace CompanyName.ProjectName.WebApi.Controllers
         {
             var message = mapper.Map<Message>(createMessage);
 
-            await messagesService.MessagesRepository.AddAsync(message);
+            await messagesService.MessagesRepository.CreateAsync(message);
             await messagesService.MessagesRepository.SaveChangesAsync();
 
             var result = mapper.Map<ReadMessage>(message);

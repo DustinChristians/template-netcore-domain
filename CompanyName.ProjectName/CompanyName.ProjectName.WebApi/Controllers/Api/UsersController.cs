@@ -55,7 +55,7 @@ namespace CompanyName.ProjectName.WebApi.Controllers
         {
             var user = mapper.Map<User>(createUser);
 
-            await usersService.UsersRepository.AddAsync(user);
+            await usersService.UsersRepository.CreateAsync(user);
             await usersService.UsersRepository.SaveChangesAsync();
 
             var result = mapper.Map<ReadUser>(user);

@@ -22,8 +22,8 @@ namespace CompanyName.ProjectName.Core.Abstractions.Repositories
         Task<int> CountAllAsync();
         Task<int> CountWhereAsync(Expression<Func<TDomainModel, bool>> predicate);
 
-        Task AddAsync(TDomainModel entity);
-        Task BulkAddAsync(List<TDomainModel> entities);
+        Task CreateAsync(TDomainModel entity);
+        Task BulkCreateAsync(List<TDomainModel> entities);
 
         void UpdateAsync(TDomainModel entity);
         Task BulkUpdateAsync(List<TDomainModel> entities);
