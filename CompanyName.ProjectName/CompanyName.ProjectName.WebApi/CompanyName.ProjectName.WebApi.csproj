@@ -19,11 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CompanyName.ProjectName.Mapping\CompanyName.ProjectName.Mapping.csproj" />
+    <Folder Include="Attributes\Validation\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Attributes\Validation\" />
+    <ProjectReference Include="..\CompanyName.ProjectName.Mapping\CompanyName.ProjectName.Configuration.csproj" />
   </ItemGroup>
 
 
