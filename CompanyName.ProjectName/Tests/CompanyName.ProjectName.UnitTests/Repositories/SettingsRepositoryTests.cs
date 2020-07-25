@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
-using AutoMapper;
-using AutoMapper.Extensions.ExpressionMapping;
 using CompanyName.ProjectName.Repository.Data;
 using CompanyName.ProjectName.Repository.Repositories.Settings;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
+using TestingUtilities;
 
 namespace CompanyName.ProjectName.UnitTests.Repositories
 {
@@ -39,7 +38,7 @@ namespace CompanyName.ProjectName.UnitTests.Repositories
 
                 context.SaveChanges();
 
-                var settingsRepository = new SettingsRepository(context, GetTestMapper());
+                var settingsRepository = new SettingsRepository(context, MapperUtilities.GetTestMapper());
 
                 // Act
                 var value = await settingsRepository.GetSettingValue("TestKey", string.Empty);
@@ -59,21 +58,6 @@ namespace CompanyName.ProjectName.UnitTests.Repositories
         public void TryUpdateSettingValue()
         {
             Assert.Pass();
-        }
-
-        private static IMapper GetTestMapper()
-        {
-            var mappingConfig = new MapperConfiguration(
-                cfg =>
-                {
-                    cfg.AddMaps("CompanyName.ProjectName.Infrastructure");
-                    cfg.AddMaps("CompanyName.ProjectName.Repository");
-                    cfg.AddExpressionMapping();
-                });
-
-            var mapper = mappingConfig.CreateMapper();
-
-            return mapper;
         }
     }
 }
