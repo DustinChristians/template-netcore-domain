@@ -20,7 +20,7 @@ namespace CompanyName.ProjectName.Repository.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MessageEntity>().ToTable("Message");
-            modelBuilder.Entity<MessageEntity>().ToTable("Setting");
+            modelBuilder.Entity<SettingEntity>().ToTable("Setting");
             modelBuilder.Entity<UserEntity>().ToTable("User");
         }
     }
