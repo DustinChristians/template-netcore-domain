@@ -2,7 +2,6 @@
 using CompanyName.ProjectName.Repository.Data;
 using CompanyName.ProjectName.Repository.Repositories.Settings;
 using CompanyName.ProjectName.TestUtilities;
-using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
 namespace CompanyName.ProjectName.UnitTests.Repositories
@@ -19,9 +18,7 @@ namespace CompanyName.ProjectName.UnitTests.Repositories
         public async Task GetSettingValue()
         {
             // Arrange
-            var options = new DbContextOptionsBuilder<CompanyNameProjectNameContext>()
-                .UseInMemoryDatabase("CompanyNameProjectNameDatabaseForTesting")
-                .Options;
+            var options = DatabaseUtilities.GetTestDbConextOptions<CompanyNameProjectNameContext>();
 
             var testSetting = new Repository.Entities.SettingEntity()
             {
