@@ -11,6 +11,7 @@ namespace CompanyName.ProjectName.Repository.Data
         }
 
         public DbSet<MessageEntity> Messages { get; set; }
+        public DbSet<SettingEntity> Settings { get; set; }
         public DbSet<UserEntity> Users { get; set; }
 
         // When the database is created, EF creates tables that have names the same as the DbSet property names.
@@ -19,6 +20,7 @@ namespace CompanyName.ProjectName.Repository.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MessageEntity>().ToTable("Message");
+            modelBuilder.Entity<MessageEntity>().ToTable("Setting");
             modelBuilder.Entity<UserEntity>().ToTable("User");
         }
     }
