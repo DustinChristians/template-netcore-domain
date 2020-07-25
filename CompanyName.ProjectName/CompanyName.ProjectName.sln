@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompanyName.ProjectName.Web
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompanyName.ProjectName.Scheduler", "CompanyName.ProjectName.Scheduler\CompanyName.ProjectName.Scheduler.csproj", "{D4776C10-7594-4D8B-BBB3-9F3937692E70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingUtilities", "Tests\TestingUtilities\TestingUtilities.csproj", "{BA9F241F-CE2B-4E67-9F90-1B78C694DEFC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompanyName.ProjectName.TestUtilities", "Tests\TestingUtilities\CompanyName.ProjectName.TestUtilities.csproj", "{BA9F241F-CE2B-4E67-9F90-1B78C694DEFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

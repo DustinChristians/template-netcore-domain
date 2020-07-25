@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using CompanyName.ProjectName.Repository.Data;
 using CompanyName.ProjectName.Repository.Repositories.Settings;
+using CompanyName.ProjectName.TestUtilities;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-using TestingUtilities;
 
 namespace CompanyName.ProjectName.UnitTests.Repositories
 {

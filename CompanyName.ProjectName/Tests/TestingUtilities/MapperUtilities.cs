@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
 
-namespace TestingUtilities
+namespace CompanyName.ProjectName.TestUtilities
 {
     public static class MapperUtilities
     {
