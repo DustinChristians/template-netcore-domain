@@ -23,21 +23,24 @@ namespace CompanyName.ProjectName.UnitTests.Repositories
                 .UseInMemoryDatabase("CompanyNameProjectNameDatabaseForTesting")
                 .Options;
 
+            var testSetting = new Repository.Entities.SettingEntity()
+            {
+                Key = "TestKey",
+                Value = "TestValue",
+                Type = typeof(string).ToString(),
+                DisplayName = "Test Key",
+                Description = "For Testing GetSettingValue"
+            };
+
             using (var context = new CompanyNameProjectNameContext(options))
             {
-                var testSetting = new Repository.Entities.SettingEntity()
-                {
-                    Key = "TestKey",
-                    Value = "TestValue",
-                    Type = typeof(string).ToString(),
-                    DisplayName = "Test Key",
-                    Description = "For Testing GetSettingValue"
-                };
-
                 context.Settings.Add(testSetting);
 
                 context.SaveChanges();
+            }
 
+            using (var context = new CompanyNameProjectNameContext(options))
+            {
                 var settingsRepository = new SettingsRepository(context, MapperUtilities.GetTestMapper());
 
                 // Act
