@@ -10,7 +10,19 @@ namespace CompanyName.ProjectName.UnitTests.Repositories
         }
 
         [Test]
-        public void Test1()
+        public void GetSettingValue()
+        {
+            Assert.Pass();
+        }
+
+        [Test]
+        public void TryGetSettingValue()
+        {
+            Assert.Pass();
+        }
+
+        [Test]
+        public void TryUpdateSettingValue()
         {
             Assert.Pass();
         }
