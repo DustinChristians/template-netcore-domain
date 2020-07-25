@@ -14,8 +14,10 @@ namespace CompanyName.ProjectName.UnitTests.Repositories
         {
         }
 
-        [Test]
-        public async Task GetSettingValue_KeyNotExists_DefaultValue()
+        [TestCase("")]
+        [TestCase("KeyThatDoesNotExist")]
+        [TestCase(null)]
+        public async Task GetSettingValue_ReturnsDefaultValue(string key)
         {
             // Arrange
             var options = DatabaseUtilities.GetTestDbConextOptions<CompanyNameProjectNameContext>();
@@ -27,7 +29,7 @@ namespace CompanyName.ProjectName.UnitTests.Repositories
                 var settingsRepository = new SettingsRepository(context, MapperUtilities.GetTestMapper());
 
                 // Act
-                var value = await settingsRepository.GetSettingValue("TestKey", defaultValue);
+                var value = await settingsRepository.GetSettingValue(key, defaultValue);
 
                 // Assert
                 Assert.AreEqual(value, defaultValue);
