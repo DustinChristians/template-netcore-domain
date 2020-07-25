@@ -15,7 +15,27 @@ namespace CompanyName.ProjectName.UnitTests.Repositories
         }
 
         [Test]
-        public async Task GetSettingValue()
+        public async Task GetSettingValue_KeyNotExists_DefaultValue()
+        {
+            // Arrange
+            var options = DatabaseUtilities.GetTestDbConextOptions<CompanyNameProjectNameContext>();
+
+            var defaultValue = "default value";
+
+            using (var context = new CompanyNameProjectNameContext(options))
+            {
+                var settingsRepository = new SettingsRepository(context, MapperUtilities.GetTestMapper());
+
+                // Act
+                var value = await settingsRepository.GetSettingValue("TestKey", defaultValue);
+
+                // Assert
+                Assert.AreEqual(value, defaultValue);
+            }
+        }
+
+        [Test]
+        public async Task GetSettingValue_TestKeyString_AreEqual()
         {
             // Arrange
             var options = DatabaseUtilities.GetTestDbConextOptions<CompanyNameProjectNameContext>();
