@@ -12,8 +12,6 @@ namespace CompanyName.ProjectName.TestUtilities
 
             var connection = new SqliteConnection(connectionStringBuilder.ToString());
 
-            // Random Guids are used for database names so in memory databases aren't
-            // reused between tests to ensure test isolation.  
             return new DbContextOptionsBuilder<TContext>()
                             .UseSqlite(connection)
                             .Options;
