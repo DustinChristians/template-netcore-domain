@@ -2,6 +2,7 @@
 using CompanyName.ProjectName.Repository.Data;
 using CompanyName.ProjectName.Repository.Repositories.Settings;
 using CompanyName.ProjectName.TestUtilities;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
 namespace CompanyName.ProjectName.UnitTests.Repositories
@@ -26,6 +27,9 @@ namespace CompanyName.ProjectName.UnitTests.Repositories
 
             using (var context = new CompanyNameProjectNameContext(options))
             {
+                context.Database.OpenConnection();
+                context.Database.EnsureCreated();
+
                 var settingsRepository = new SettingsRepository(context, MapperUtilities.GetTestMapper());
 
                 // Act
@@ -53,6 +57,9 @@ namespace CompanyName.ProjectName.UnitTests.Repositories
 
             using (var context = new CompanyNameProjectNameContext(options))
             {
+                context.Database.OpenConnection();
+                context.Database.EnsureCreated();
+
                 context.Settings.Add(testSetting);
 
                 context.SaveChanges();
