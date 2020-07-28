@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using CompanyName.ProjectName.Repository.Data;
 using CompanyName.ProjectName.Repository.Repositories.Settings;
 using CompanyName.ProjectName.TestUtilities;
@@ -41,7 +41,7 @@ namespace CompanyName.ProjectName.UnitTests.Repositories
         }
 
         [Test]
-        public async Task GetSettingValue_TestKeyString_AreEqual()
+        public async Task GetSettingValue_TestKeyString_ReturnsKeyValue()
         {
             // Arrange
             var options = DatabaseUtilities.GetTestDbConextOptions<CompanyNameProjectNameContext>();
