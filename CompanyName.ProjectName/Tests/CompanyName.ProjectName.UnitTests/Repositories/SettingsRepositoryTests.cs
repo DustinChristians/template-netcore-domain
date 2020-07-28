@@ -77,6 +77,30 @@ namespace CompanyName.ProjectName.UnitTests.Repositories
             }
         }
 
+        [TestCase("")]
+        [TestCase("KeyThatDoesNotExist")]
+        [TestCase(null)]
+        public async Task TryGetSettingValue_ReturnsNullSuccessfulFalse(string key)
+        {
+            // Arrange
+            var options = DatabaseUtilities.GetTestDbConextOptions<CompanyNameProjectNameContext>();
+
+            using (var context = new CompanyNameProjectNameContext(options))
+            {
+                context.Database.OpenConnection();
+                context.Database.EnsureCreated();
+
+                var settingsRepository = new SettingsRepository(context, MapperUtilities.GetTestMapper());
+
+                // Act
+                var result = await settingsRepository.TryGetSettingValue<string>(key);
+
+                // Assert
+                Assert.AreEqual(result.Value, null);
+                Assert.AreEqual(result.Successful, false);
+            }
+        }
+
         [Test]
         public async Task TryGetSettingValue_TestKeyString_ReturnsKeyValue()
         {
