@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CompanyName.ProjectName.Repository.Data;
 using CompanyName.ProjectName.Repository.Repositories.Settings;
 using CompanyName.ProjectName.TestUtilities;
@@ -78,9 +78,41 @@ namespace CompanyName.ProjectName.UnitTests.Repositories
         }
 
         [Test]
-        public void TryGetSettingValue()
+        public async Task TryGetSettingValue_TestKeyString_ReturnsKeyValue()
         {
-            Assert.Pass();
+            // Arrange
+            var options = DatabaseUtilities.GetTestDbConextOptions<CompanyNameProjectNameContext>();
+
+            var testSetting = new Repository.Entities.SettingEntity()
+            {
+                Key = "TestKey",
+                Value = "TestValue",
+                Type = typeof(string).ToString(),
+                DisplayName = "Test Key",
+                Description = "For Testing GetSettingValue"
+            };
+
+            using (var context = new CompanyNameProjectNameContext(options))
+            {
+                context.Database.OpenConnection();
+                context.Database.EnsureCreated();
+
+                context.Settings.Add(testSetting);
+
+                context.SaveChanges();
+            }
+
+            using (var context = new CompanyNameProjectNameContext(options))
+            {
+                var settingsRepository = new SettingsRepository(context, MapperUtilities.GetTestMapper());
+
+                // Act
+                var result = await settingsRepository.TryGetSettingValue<string>("TestKey");
+
+                // Assert
+                Assert.AreEqual(result.Value, testSetting.Value);
+                Assert.AreEqual(result.Successful, true);
+            }
         }
 
         [Test]
