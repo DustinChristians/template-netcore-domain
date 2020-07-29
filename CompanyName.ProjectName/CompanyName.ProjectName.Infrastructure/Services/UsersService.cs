@@ -11,5 +11,7 @@ namespace CompanyName.ProjectName.Infrastructure.Services
         }
 
         public IUsersRepository UsersRepository { get; }
+
+        // Add business logic here
     }
 }

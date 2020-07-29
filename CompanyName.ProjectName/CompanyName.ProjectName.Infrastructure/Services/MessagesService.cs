@@ -11,5 +11,7 @@ namespace CompanyName.ProjectName.Infrastructure.Services
         }
 
         public IMessagesRepository MessagesRepository { get; }
+
+        // Add business logic here
     }
 }
