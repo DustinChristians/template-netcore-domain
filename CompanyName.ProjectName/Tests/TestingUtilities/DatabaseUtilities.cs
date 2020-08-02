@@ -1,5 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using NUnit.Framework;
 
 namespace CompanyName.ProjectName.TestUtilities
 {
@@ -13,8 +15,15 @@ namespace CompanyName.ProjectName.TestUtilities
             var connection = new SqliteConnection(connectionStringBuilder.ToString());
 
             return new DbContextOptionsBuilder<TContext>()
-                            .UseSqlite(connection)
-                            .Options;
+                // Log all Entity Framework Core information to
+                // the test log for easy troubleshooting
+                .UseLoggerFactory(new LoggerFactory(
+                    new[] { new LogToActionLoggerProvider((log) =>
+                    {
+                        TestContext.Out.WriteLine(log);
+                    }) }))
+                .UseSqlite(connection)
+                .Options;
         }
     }
 }
