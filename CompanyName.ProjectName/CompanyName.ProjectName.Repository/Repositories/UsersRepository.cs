@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CompanyName.ProjectName.Core.Abstractions.Repositories;
-using CompanyName.ProjectName.Core.Extensions;
 using CompanyName.ProjectName.Core.Models.Domain;
 using CompanyName.ProjectName.Core.Models.ResourceParameters;
 using CompanyName.ProjectName.Core.Models.Search;
@@ -26,11 +25,6 @@ namespace CompanyName.ProjectName.Repository.Repositories
             if (parameters == null)
             {
                 throw new ArgumentNullException(nameof(UsersResourceParameters));
-            }
-
-            if (parameters.AllPropertiesAreNull())
-            {
-                return await GetAllAsync();
             }
 
             var userEntities = await Search()
