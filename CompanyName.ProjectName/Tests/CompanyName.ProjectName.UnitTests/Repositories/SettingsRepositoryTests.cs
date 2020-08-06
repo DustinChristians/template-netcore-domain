@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using CompanyName.ProjectName.Core.Models.Domain;
 using CompanyName.ProjectName.Repository.Data;
 using CompanyName.ProjectName.Repository.Repositories.Settings;
 using CompanyName.ProjectName.TestUtilities;
@@ -107,7 +108,7 @@ namespace CompanyName.ProjectName.UnitTests.Repositories
             // Arrange
             var options = DatabaseUtilities.GetTestDbConextOptions<CompanyNameProjectNameContext>();
 
-            var testSetting = new Repository.Entities.SettingEntity()
+            var testSetting = new Setting()
             {
                 Key = "TestKey",
                 Value = "TestValue",
@@ -121,7 +122,8 @@ namespace CompanyName.ProjectName.UnitTests.Repositories
                 context.Database.OpenConnection();
                 context.Database.EnsureCreated();
 
-                context.Settings.Add(testSetting);
+                var settingsRepository = new SettingsRepository(context, MapperUtilities.GetTestMapper());
+                await settingsRepository.CreateAsync(testSetting);
 
                 context.SaveChanges();
             }
