@@ -60,8 +60,6 @@ namespace CompanyName.ProjectName.WebApi.Controllers.Api
                 await usersService.UsersRepository.CreateAsync(user);
             }
 
-            await usersService.UsersRepository.SaveChangesAsync();
-
             var createUsersToReturn = mapper.Map<IEnumerable<ReadUser>>(users);
             var guidsAsString = string.Join(",", createUsersToReturn.Select(x => x.Guid));
 

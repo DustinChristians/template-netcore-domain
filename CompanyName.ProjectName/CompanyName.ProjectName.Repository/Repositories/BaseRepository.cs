@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -85,6 +85,7 @@ namespace CompanyName.ProjectName.Repository.Repositories
 
             SetCreateMetadata(entity);
             await Context.Set<TEntity>().AddAsync(entity);
+            await SaveChangesAsync();
 
             Mapper.Map(entity, domainModel);
         }
