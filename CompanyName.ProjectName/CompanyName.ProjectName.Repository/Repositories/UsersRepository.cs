@@ -40,19 +40,19 @@ namespace CompanyName.ProjectName.Repository.Repositories
 
             searchMutator.AddCondition(
                 parameters => !string.IsNullOrWhiteSpace(parameters.Email),
-                (messages, parameters) => messages.Where(message => message.Email == parameters.Email));
+                (users, parameters) => users.Where(user => user.Email == parameters.Email));
 
             searchMutator.AddCondition(
                 parameters => !string.IsNullOrWhiteSpace(parameters.FirstName),
-                (messages, parameters) => messages.Where(message => message.FirstName == parameters.FirstName));
+                (users, parameters) => users.Where(user => user.FirstName == parameters.FirstName));
 
             searchMutator.AddCondition(
                 parameters => !string.IsNullOrWhiteSpace(parameters.LastName),
-                (messages, parameters) => messages.Where(message => message.LastName == parameters.LastName));
+                (users, parameters) => users.Where(user => user.LastName == parameters.LastName));
 
             searchMutator.AddCondition(
                 parameters => !string.IsNullOrWhiteSpace(parameters.SearchQuery),
-                (messages, parameters) => messages.Where(u =>
+                (users, parameters) => users.Where(u =>
                     u.Email.Contains(parameters.SearchQuery) ||
                     u.FirstName.Contains(parameters.SearchQuery) ||
                     u.LastName.Contains(parameters.SearchQuery)));
