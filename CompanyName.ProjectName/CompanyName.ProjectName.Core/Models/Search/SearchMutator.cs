@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CompanyName.ProjectName.Core.Extensions;
 
 namespace CompanyName.ProjectName.Core.Models.Search
 {
@@ -15,6 +16,8 @@ namespace CompanyName.ProjectName.Core.Models.Search
 
         public IQueryable<TItem> Apply(TSearch search, IQueryable<TItem> query)
         {
+            search.AllStringsToLower();
+
             foreach (var searchFieldMutator in SearchFieldMutators)
             {
                 query = searchFieldMutator.Apply(search, query);
