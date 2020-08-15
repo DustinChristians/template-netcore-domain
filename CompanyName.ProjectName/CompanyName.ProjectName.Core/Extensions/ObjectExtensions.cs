@@ -8,5 +8,22 @@ namespace CompanyName.ProjectName.Core.Extensions
         {
             return obj == null || typeof(T).GetProperties().All(propertyInfo => propertyInfo.GetValue(obj) == null);
         }
+
+        public static T AllStringsToLower<T>(this T obj)
+        {
+            foreach (var property in obj.GetType().GetProperties())
+            {
+                if (property.PropertyType == typeof(string))
+                {
+                    var value = property.GetValue(obj, null)?
+                        .ToString()
+                        .ToLower();
+
+                    property.SetValue(obj, value);
+                }
+            }
+
+            return obj;
+        }
     }
 }
