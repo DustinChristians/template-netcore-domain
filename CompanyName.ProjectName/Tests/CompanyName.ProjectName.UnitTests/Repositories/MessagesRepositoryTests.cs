@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CompanyName.ProjectName.Core.Models.Domain;
@@ -14,6 +15,24 @@ namespace CompanyName.ProjectName.UnitTests.Repositories
     [TestFixture]
     public class MessagesRepositoryTests
     {
+        public static IEnumerable<TestCaseData> NotFoundSearchTestCases
+        {
+            get
+            {
+                yield return new TestCaseData(new MessagesResourceParameters
+                {
+                    ChannelId = 3,
+                    SearchQuery = null
+                });
+                yield return new TestCaseData(new MessagesResourceParameters
+                {
+                    ChannelId = 1,
+                    SearchQuery = "Three"
+                }
+                );
+            }
+        }
+
         [SetUp]
         public void Setup()
         {
@@ -224,8 +243,8 @@ namespace CompanyName.ProjectName.UnitTests.Repositories
             }
         }
 
-        [Test]
-        public async Task GetMessagesAsync_ChannelId3_ReturnsNull()
+        [TestCaseSource(nameof(NotFoundSearchTestCases))]
+        public async Task GetMessagesAsync_ChannelId3_ReturnsEmptyList(MessagesResourceParameters messagesResourceParameters)
         {
             // Arrange
             var options = DatabaseUtilities.GetTestDbConextOptions<CompanyNameProjectNameContext>();
@@ -275,71 +294,7 @@ namespace CompanyName.ProjectName.UnitTests.Repositories
                 var messagesRepository = new MessagesRepository(context, MapperUtilities.GetTestMapper());
 
                 // Act
-                var parameters = new MessagesResourceParameters { ChannelId = 3, SearchQuery = null };
-
-                // Get messages with null properties for parameters
-                var results = await messagesRepository.GetMessagesAsync(parameters);
-
-                // Assert
-                Assert.AreEqual(results.Count(), 0);
-            }
-        }
-
-        [Test]
-        public async Task GetMessagesAsync_SearchQueryDoesntExist_ReturnsNull()
-        {
-            // Arrange
-            var options = DatabaseUtilities.GetTestDbConextOptions<CompanyNameProjectNameContext>();
-
-            var user = new User()
-            {
-                Email = "test@test.com",
-                FirstName = "Test",
-                LastName = "User"
-            };
-
-            var messageOne = new Message()
-            {
-                Text = "Test Message One",
-                ChannelId = 1,
-            };
-            var messageTwo = new Message()
-            {
-                Text = "Test Message Two",
-                ChannelId = 2,
-            };
-
-            using (var context = new CompanyNameProjectNameContext(options))
-            {
-                context.Database.OpenConnection();
-                context.Database.EnsureCreated();
-
-                // Add a user because we need a UserId foreign key for the messages
-                var usersRepository = new UsersRepository(context, MapperUtilities.GetTestMapper());
-                await usersRepository.CreateAsync(user);
-            }
-
-            using (var context = new CompanyNameProjectNameContext(options))
-            {
-                var messagesRepository = new MessagesRepository(context, MapperUtilities.GetTestMapper());
-
-                messageOne.UserId = user.Id;
-                messageTwo.UserId = user.Id;
-
-                // Add the messages
-                await messagesRepository.CreateAsync(messageOne);
-                await messagesRepository.CreateAsync(messageTwo);
-            }
-
-            using (var context = new CompanyNameProjectNameContext(options))
-            {
-                var messagesRepository = new MessagesRepository(context, MapperUtilities.GetTestMapper());
-
-                // Act
-                var parameters = new MessagesResourceParameters { ChannelId = 1, SearchQuery = "Three" };
-
-                // Get messages with null properties for parameters
-                var results = await messagesRepository.GetMessagesAsync(parameters);
+                var results = await messagesRepository.GetMessagesAsync(messagesResourceParameters);
 
                 // Assert
                 Assert.AreEqual(results.Count(), 0);
