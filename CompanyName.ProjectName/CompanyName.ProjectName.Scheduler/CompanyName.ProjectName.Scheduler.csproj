@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.11" />
-    <PackageReference Include="HangFire.Core" Version="1.7.11" />
-    <PackageReference Include="HangFire.SqlServer" Version="1.7.11" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.12" />
+    <PackageReference Include="HangFire.Core" Version="1.7.12" />
+    <PackageReference Include="HangFire.SqlServer" Version="1.7.12" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
