@@ -44,7 +44,7 @@ namespace CompanyName.ProjectName.Repository.Repositories
 
             searchMutator.AddCondition(
                 parameters => !string.IsNullOrWhiteSpace(parameters.SearchQuery),
-                (messages, parameters) => messages.Where(u => u.Text.Contains(parameters.SearchQuery)));
+                (messages, parameters) => messages.Where(u => u.Text.ToLower().Contains(parameters.SearchQuery)));
 
             return searchMutator;
         }
