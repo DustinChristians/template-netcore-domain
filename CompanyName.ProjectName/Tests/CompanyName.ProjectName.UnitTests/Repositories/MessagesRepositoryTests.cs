@@ -28,8 +28,7 @@ namespace CompanyName.ProjectName.UnitTests.Repositories
                 {
                     ChannelId = 1,
                     SearchQuery = "Three"
-                }
-                );
+                });
             }
         }
 
