@@ -13,6 +13,10 @@ A sample .NET Core CRUD solution to be used as a template for new projects.
 - A Hangfire Scheduler project. There is a single scheduled task that exists to keep the Event Log size down to a minimum. More tasks can easily be added with minimal configuration. Task settings are placed in the appsettings.json file.
 - NUnit tests for the existing messages, users and settings repositories.
 
+## Creating a New Project from this Template
+- Edit the RenameScript.ps1 PowerShell script and change the $a variable to CompanyName.ProjectName and the $b variable to YourCompanyName.YourProjectName to remame all directories, files and code instances of CompanyName.ProjectName to your CompanyName and your ProjectName. Do the same thing again for CompanyNameProjectName and YourCompanyNameYourProjectName.
+- To run the PowerShell script, open PowerShell, navigate to the directoty with the script and run the following command: `powershell.exe -executionpolicy bypass -file .\RenameScript.ps1`
+
 ## Localhost Spinup Instructions
 - Clone this repository and open it in Visual Studio 2019.
 - If you aren't on the latest update for Visual Studio 2019 then you should perform the update to get .NET Core 3.1. In the toolbar, Go to Help -> Check for updates -> Update.
